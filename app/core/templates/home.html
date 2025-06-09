@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Witamy w aplikacji <span class="highlight">Tagify</span>!</h1>
+<p style="text-align: center;">Twoja platforma do inteligentnej klasyfikacji zdjęć.</p>
+
+<div style="text-align: center; margin-top: 2rem;">
+  <a href="{{ url_for('core.pro_info') }}" class="btn">Poznaj zalety wersji PRO</a>
+</div>
+{% endblock %}

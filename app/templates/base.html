@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tagify</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="{{ url_for('core.home') }}">Tagify</a>
+    <div class="nav-links">
+      {% if current_user.is_authenticated %}
+        <span class="username">Witaj, {{ current_user.username }}</span>
+        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Logowanie</a>
+        <a href="{{ url_for('auth.register') }}">Rejestracja</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
