@@ -59,19 +59,20 @@ Aplikacja będzie dostępna pod adresem:
 
 ## Struktura projektu
 
+```markdown
 project/
 ├── app/
-│   ├── auth/            # logowanie, rejestracja
-│   ├── core/            # strona główna, pro
-│   ├── static/          # style CSS
-│   ├── templates/       # base.html
-│   ├── models.py        # definicja modelu User
-│   └── __init__.py      # konfiguracja aplikacji
-├── instance/            # lokalna baza danych SQLite
-├── run.py               # punkt startowy aplikacji
-├── requirements.txt     # zależności
+│ ├── auth/ # logowanie, rejestracja
+│ ├── core/ # strona główna, pro
+│ ├── static/ # style CSS
+│ ├── templates/ # base.html
+│ ├── models.py # definicja modelu User
+│ └── init.py # konfiguracja aplikacji
+├── instance/ # lokalna baza danych SQLite
+├── run.py # punkt startowy aplikacji
+├── requirements.txt # zależności
 └── README.md
-
+```
 ---
 
 ## Wymagania
