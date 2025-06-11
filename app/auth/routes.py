@@ -45,4 +45,4 @@ def login():
 def logout():
     logout_user()
     flash('Zostałeś wylogowany.', 'success')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('core.home'))

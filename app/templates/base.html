@@ -5,6 +5,8 @@
   <title>Tagify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
 </head>
 <body>
   <div id="bg-wrapper" class="hero-bg">
@@ -14,7 +16,10 @@
 
   <nav class="navbar">
     <div class="nav-container">
-      <a class="brand" href="{{ url_for('core.home') }}">Tagify</a>
+      <a class="brand" href="{{ url_for('core.dashboard') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
+        <span>Tagify</span>
+      </a>
       <div class="nav-links">
         {% if current_user.is_authenticated %}
           <span class="username">Witaj, {{ current_user.username }}</span>

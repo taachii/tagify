@@ -73,10 +73,17 @@ body.hero-bg {
 }
 
 .brand {
+  display: flex;
+  align-items: center;
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;
   color: white;
+}
+
+.brand .logo {
+  height: 64px;
+  width: auto;
 }
 
 .nav-links a {
