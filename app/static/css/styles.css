@@ -18,6 +18,34 @@ body.hero-bg {
   background-attachment: fixed;
 }
 
+#bg-wrapper.hero-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 1;
+  overflow: hidden;
+}
+
+/* Dodane: warstwy do płynnego przejścia */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: opacity 2s ease-in-out;
+  opacity: 0;
+  z-index: 0;
+}
+
+#bg1 {
+  z-index: 1;
+}
+
+#bg2 {
+  z-index: 2;
+}
+
 /* Tło dla logowania/rejestracji */
 .auth-body {
   background: linear-gradient(135deg, #1f1c2c, #928dab);
