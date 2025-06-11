@@ -1,27 +1,22 @@
+<!-- templates/dashboard_base.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Tagify</title>
+  <title>Tagify – Panel użytkownika</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
-  <div id="bg-wrapper" class="hero-bg">
-    <div class="bg-layer" id="bg1"></div>
-    <div class="bg-layer" id="bg2"></div>
-  </div>  
+<body class="auth-body">
 
   <nav class="navbar">
     <div class="nav-container">
-      <a class="brand" href="{{ url_for('core.home') }}">Tagify</a>
+      <a class="brand" href="{{ url_for('core.dashboard') }}">Tagify – Panel</a>
       <div class="nav-links">
         {% if current_user.is_authenticated %}
           <span class="username">Witaj, {{ current_user.username }}</span>
           <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
-        {% else %}
-          <a href="{{ url_for('auth.login') }}">Logowanie</a>
-          <a href="{{ url_for('auth.register') }}">Rejestracja</a>
         {% endif %}
       </div>
     </div>
@@ -31,6 +26,5 @@
     {% block content %}{% endblock %}
   </main>
 
-  <script src="{{ url_for('static', filename='js/background-rotator.js') }}"></script>
 </body>
 </html>

@@ -8,9 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   let index = 0;
-  const interval = 15000;
-  const fadeTime = 2000;
-
+  const interval = 12000;
+  
   const bg1 = document.getElementById("bg1");
   const bg2 = document.getElementById("bg2");
   let showingBg1 = true;

@@ -36,7 +36,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             flash(f'Zalogowano jako {user.username} ({user.role})', 'success')
-            return redirect(url_for('core.home'))
+            return redirect(url_for('core.dashboard'))
         flash('Nieprawidłowy login lub hasło.', 'danger')
     return render_template('login.html', form=form)
 

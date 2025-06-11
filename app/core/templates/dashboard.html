@@ -1,0 +1,18 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<div class="auth-container">
+  <h2>Panel użytkownika</h2>
+  <p>Witaj w panelu! Tutaj możesz przesłać plik ZIP zawierający zdjęcia do kategoryzacji.</p>
+
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      <i class="fas fa-folder-open"></i>
+      {{ form.zip_file(class="form-input") }}
+    </div>
+
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endblock %}
