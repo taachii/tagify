@@ -183,7 +183,7 @@ body.hero-bg {
 
 .auth-container form .btn {
   margin-top: 1.5rem;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .form-link {
@@ -202,6 +202,24 @@ body.hero-bg {
 
 .form-link a:hover {
   color: #ffffff;
+}
+
+.form-group {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.form-group i {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1rem;
+}
+
+.form-group .form-input {
+  padding-left: 2.5rem;
 }
 
 /* Alerty */

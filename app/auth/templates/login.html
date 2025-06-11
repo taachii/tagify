@@ -5,18 +5,22 @@
   <form method="POST">
     {{ form.hidden_tag() }}
 
-    <label>{{ form.username.label }}</label>
-    {{ form.username(class="form-input") }}
+    <div class="form-group">
+      <i class="fas fa-user"></i>
+      {{ form.username(class="form-input", placeholder="Nazwa użytkownika") }}
+    </div>
 
-    <label>{{ form.password.label }}</label>
-    {{ form.password(class="form-input") }}
+    <div class="form-group">
+      <i class="fas fa-lock"></i>
+      {{ form.password(class="form-input", placeholder="Hasło") }}
+    </div>
 
     {{ form.submit(class="btn") }}
-
-    <p class="form-link">
-      Nie masz konta?
-      <a href="{{ url_for('auth.register') }}">Zarejestruj się</a>
-    </p>
   </form>
+
+  <p class="form-link">
+    Nie masz konta?
+    <a href="{{ url_for('auth.register') }}">Zarejestruj się</a>
+  </p>
 </div>
 {% endblock %}
