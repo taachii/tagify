@@ -1,19 +1,65 @@
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+/* Reset i bazowe */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+/* Tło dla strony głównej */
+body.hero-bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+/* Tło dla logowania/rejestracji */
+.auth-body {
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  color: #eee;
+}
+
+/* Nawigacja */
 .navbar {
-    background-color: #1e1e2f;
-    color: white;
-    padding: 1rem 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  background-color: #1e1e2f;
+  padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.nav-links a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: white;
 }
 
 .username {
@@ -22,90 +68,180 @@ body {
   font-weight: bold;
 }
 
-.nav-container {
-    width: 90%;
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Hero sekcja */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
 }
 
-.brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
+.hero-content {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: white;
 }
 
-.nav-links a {
-    margin-left: 1rem;
-    text-decoration: none;
-    color: #ccc;
-    transition: color 0.3s ease;
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-.nav-links a:hover {
-    color: white;
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
 
-.container {
-    max-width: 600px;
-    margin: 120px auto 50px auto;
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.form-input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .btn {
-    margin-top: 1.5rem;
-    padding: 0.75rem;
-    background-color: #0077cc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #7f5af0, #ff6ac1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #005fa3;
+  background: linear-gradient(135deg, #6c3ae0, #e44ea0);
 }
 
+.btn-outline {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: #1e1e2f;
+}
+
+/* Formularze (logowanie / rejestracja) */
+.auth-container {
+  max-width: 500px;
+  margin: 160px auto 60px auto;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #eee;
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container label {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  display: block;
+}
+
+.auth-container .form-input {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #666;
+  border-radius: 6px;
+  background-color: #2a2a3a;
+  color: #fff;
+}
+
+.auth-container .form-input:focus {
+  border-color: #2383e2;
+  outline: none;
+  background-color: #3a3a4a;
+}
+
+.auth-container form .btn {
+  margin-top: 1.5rem;
+  align-self: flex-start;
+}
+
+.form-link {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #bbb;
+  text-align: center;
+}
+
+.form-link a {
+  color: #ff6ac1;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.form-link a:hover {
+  color: #ffffff;
+}
+
+/* Alerty */
 .alert {
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    text-align: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .alert.success { background-color: #d4edda; color: #155724; }
 .alert.warning { background-color: #fff3cd; color: #856404; }
 .alert.danger  { background-color: #f8d7da; color: #721c24; }
 
-.highlight {
-    color: #0077cc;
+/* Responsywność */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .auth-container {
+    margin-top: 140px;
+    margin-bottom: 40px;
+    width: 90%;
+    padding: 2rem;
+  }
 }

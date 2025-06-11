@@ -2,11 +2,12 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Tagify</title>
+  <title>Tagify – Logowanie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body class="hero-bg">
+<body class="auth-body">
+
   <nav class="navbar">
     <div class="nav-container">
       <a class="brand" href="{{ url_for('core.home') }}">Tagify</a>
@@ -34,6 +35,5 @@
     {% endwith %}
     {% block content %}{% endblock %}
   </main>
-  <script src="{{ url_for('static', filename='/js/background-rotator.js') }}"></script>
 </body>
 </html>
