@@ -14,9 +14,9 @@
 
   <nav class="navbar">
     <div class="nav-container">
-      <a class="brand" href="{{ url_for('core.dashboard') }}">
+      <a class="brand" href="{{ url_for('user.dashboard') }}">
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
-        <span>Panel użytkownika</span>
+        <span>Tagify</span>
       </a>
       <div class="nav-links">
         {% if current_user.is_authenticated %}

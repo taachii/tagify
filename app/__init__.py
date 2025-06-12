@@ -25,10 +25,13 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    from .auth import auth as auth_blueprint
+    from app.blueprints.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
-    from .core import core as core_blueprint
+    from app.blueprints.core import core as core_blueprint
     app.register_blueprint(core_blueprint)
+
+    from app.blueprints.user import user as user_blueprint
+    app.register_blueprint(user_blueprint)
 
     return app

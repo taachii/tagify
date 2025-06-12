@@ -1,10 +1,11 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from . import auth
 from .forms import RegistrationForm, LoginForm
-from ..models import User
-from .. import db
+from app.models import User, UserRole
+from app import db
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -19,13 +20,13 @@ def register():
             username=form.username.data,
             email=form.email.data,
             password=generate_password_hash(form.password.data),
-            role='regular'
+            role=UserRole.REGULAR
         )
         db.session.add(new_user)
         db.session.commit()
         flash('Rejestracja zakończona sukcesem!', 'success')
         return redirect(url_for('auth.login'))
-    return render_template('register.html', form=form)
+    return render_template('auth/register.html', form=form)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -36,9 +37,9 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             flash(f'Zalogowano jako {user.username} ({user.role})', 'success')
-            return redirect(url_for('core.dashboard'))
+            return redirect(url_for('user.dashboard'))
         flash('Nieprawidłowy login lub hasło.', 'danger')
-    return render_template('login.html', form=form)
+    return render_template('auth/login.html', form=form)
 
 @auth.route('/logout')
 @login_required

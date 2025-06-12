@@ -1,19 +1,12 @@
-from flask import render_template
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required
-from . import core
-from .forms import ZipUploadForm
-import os
 from werkzeug.utils import secure_filename
+import os
 
-@core.route('/')
-def home():
-    return render_template('home.html')
+from . import user
+from .forms import ZipUploadForm
 
-@core.route('/pro')
-def pro_info():
-    return render_template('pro.html')
-
-@core.route('/dashboard', methods=['GET', 'POST'])
+@user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     form = ZipUploadForm()
@@ -24,7 +17,6 @@ def dashboard():
         os.makedirs(os.path.dirname(upload_path), exist_ok=True)
         zip_data.save(upload_path)
         flash('Plik został przesłany poprawnie!', 'success')
-        return redirect(url_for('core.dashboard'))
+        return redirect(url_for('user.dashboard'))
 
-    return render_template('dashboard.html', form=form)
-
+    return render_template('user/dashboard.html', form=form)
