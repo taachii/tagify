@@ -26,12 +26,15 @@ def create_app():
         return User.query.get(int(user_id))
 
     from app.blueprints.auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     from app.blueprints.core import core as core_blueprint
     app.register_blueprint(core_blueprint)
 
     from app.blueprints.user import user as user_blueprint
-    app.register_blueprint(user_blueprint)
+    app.register_blueprint(user_blueprint, url_prefix='/user')
+
+    from app.blueprints.admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     return app

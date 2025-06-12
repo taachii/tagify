@@ -36,8 +36,15 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash(f'Zalogowano jako {user.username} ({user.role})', 'success')
-            return redirect(url_for('user.dashboard'))
+            flash(f'Zalogowano jako {user.username} ({user.role.name})', 'success')
+
+            if user.is_admin():
+                return redirect(url_for('admin.dashboard'))
+            elif user.is_researcher():
+                return redirect(url_for('researcher.dashboard'))
+            else:
+                return redirect(url_for('user.dashboard'))
+
         flash('Nieprawidłowy login lub hasło.', 'danger')
     return render_template('auth/login.html', form=form)
 

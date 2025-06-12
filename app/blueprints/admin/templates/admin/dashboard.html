@@ -1,0 +1,57 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+<div class="admin-panel">
+  <h2 class="admin-title">Panel administratora</h2>
+  <div class="admin-table-wrapper">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nazwa użytkownika</th>
+          <th>Email</th>
+          <th>Rola</th>
+          <th>Utworzono</th>
+          <th>Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.uid }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role.name }}</td>
+          <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td class="action-cell">
+            <button class="gear-icon" data-userid="{{ user.uid }}" data-username="{{ user.username }}">
+              <i class="fas fa-cog"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="admin-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 id="modal-title">Opcje dla: <span id="modal-username">username</span></h3>
+    <hr class="modal-divider">
+    <ul class="modal-actions">
+      <li><a href="#"><i class="fas fa-key"></i> Zmień hasło</a></li>
+      <li><a href="#"><i class="fas fa-user-tag"></i> Zmień rolę</a></li>
+      <li><a href="#"><i class="fas fa-user-slash"></i> Dezaktywuj</a></li>
+      <li><a href="#"><i class="fas fa-user-check"></i> Aktywuj</a></li>
+      <li><a href="#"><i class="fas fa-trash-alt"></i> Usuń</a></li>
+    </ul>
+    <button class="close-modal">Zamknij</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin-modal.js') }}"></script>
+{% endblock %}
