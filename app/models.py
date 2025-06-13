@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String, nullable=False)
     role = db.Column(SQLAEnum(UserRole), nullable=False, default=UserRole.REGULAR)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self):
         return f'<User: {self.username}, Role: {self.role.value}>'

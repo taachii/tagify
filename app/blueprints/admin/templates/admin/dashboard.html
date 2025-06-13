@@ -12,21 +12,52 @@
           <th>Email</th>
           <th>Rola</th>
           <th>Utworzono</th>
+          <th>Status</th>
           <th>Akcje</th>
         </tr>
       </thead>
       <tbody>
         {% for user in users %}
-        <tr>
+        <tr class="{{ 'inactive-row' if not user.is_active else '' }}">
           <td>{{ user.uid }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.role.name }}</td>
           <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>
+            {% if user.is_active %}
+              <span class="status-active">Aktywny</span>
+            {% else %}
+              <span class="status-inactive">Nieaktywny</span>
+            {% endif %}
+          </td>
           <td class="action-cell">
-            <button class="gear-icon" data-userid="{{ user.uid }}" data-username="{{ user.username }}">
-              <i class="fas fa-cog"></i>
-            </button>
+            <!-- Edytuj -->
+            <a href="{{ url_for('admin.edit_user', user_id=user.uid) }}" class="icon-button" title="Edytuj">
+              <i class="fas fa-edit"></i>
+            </a>
+
+            <!-- Aktywuj / Dezaktywuj -->
+            {% if user.is_active %}
+            <form action="{{ url_for('admin.deactivate_user', user_id=user.uid) }}" method="POST" style="display:inline;">
+              <button class="icon-button" title="Dezaktywuj">
+                <i class="fas fa-user-lock"></i>
+              </button>
+            </form>
+            {% else %}
+            <form action="{{ url_for('admin.activate_user', user_id=user.uid) }}" method="POST" style="display:inline;">
+              <button class="icon-button" title="Aktywuj">
+                <i class="fas fa-user-check"></i>
+              </button>
+            </form>
+            {% endif %}
+
+            <!-- Usuń -->
+            <form action="{{ url_for('admin.delete_user', user_id=user.uid) }}" method="POST" style="display:inline;" onsubmit="return confirm('Na pewno chcesz usunąć użytkownika?')">
+              <button class="icon-button danger" title="Usuń">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -34,24 +65,4 @@
     </table>
   </div>
 </div>
-
-<!-- MODAL -->
-<div id="admin-modal" class="modal-overlay">
-  <div class="modal-content">
-    <h3 id="modal-title">Opcje dla: <span id="modal-username">username</span></h3>
-    <hr class="modal-divider">
-    <ul class="modal-actions">
-      <li><a href="#"><i class="fas fa-key"></i> Zmień hasło</a></li>
-      <li><a href="#"><i class="fas fa-user-tag"></i> Zmień rolę</a></li>
-      <li><a href="#"><i class="fas fa-user-slash"></i> Dezaktywuj</a></li>
-      <li><a href="#"><i class="fas fa-user-check"></i> Aktywuj</a></li>
-      <li><a href="#"><i class="fas fa-trash-alt"></i> Usuń</a></li>
-    </ul>
-    <button class="close-modal">Zamknij</button>
-  </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/admin-modal.js') }}"></script>
 {% endblock %}

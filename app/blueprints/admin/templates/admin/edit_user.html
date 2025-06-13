@@ -1,0 +1,28 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+<div class="auth-container">
+  <div class="edit-header">
+    <a href="{{ url_for('admin.dashboard') }}" class="icon-button back-button" title="Powrót do listy">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h2>Edytuj użytkownika</h2>
+  </div>
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label for="username">{{ form.username.label }}</label>
+    {{ form.username(class="form-input") }}
+
+    <label for="email">{{ form.email.label }}</label>
+    {{ form.email(class="form-input") }}
+
+    <label for="role">{{ form.role.label }}</label>
+    {{ form.role(class="form-input") }}
+
+    {{ form.submit(class="btn", style="margin-top: 3em") }}
+    
+  </form>
+</div>
+{% endblock %}
