@@ -9,18 +9,18 @@
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
-
   {% block background %}{% endblock %}
-
   {% block navbar %}{% endblock %}
 
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+  <div class="wrapper">
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-  <footer class="footer">
-    <p>&copy; 2025 Tagify – stworzone przez <a href="https://github.com/taachii" target="_blank">taachii</a></p>
-  </footer>
+    <footer class="footer">
+      <p>&copy; 2025 Tagify – stworzone przez <a href="https://github.com/taachii" target="_blank">taachii</a></p>
+    </footer>
+  </div>
 
   {% block scripts %}{% endblock %}
 </body>

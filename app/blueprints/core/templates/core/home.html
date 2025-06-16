@@ -4,43 +4,27 @@
 {% block body_class %}auth-body hero-bg{% endblock %}
 
 {% block background %}
-<div id="bg-wrapper" class="hero-bg">
-  <div class="bg-layer" id="bg1"></div>
-  <div class="bg-layer" id="bg2"></div>
-</div>
+  <div id="bg-wrapper" class="hero-bg">
+    <div class="bg-layer" id="bg1"></div>
+    <div class="bg-layer" id="bg2"></div>
+  </div>
 {% endblock %}
 
 {% block navbar %}
-<nav class="navbar">
-  <div class="nav-container">
-    <a class="brand" href="{{ url_for('core.home') }}">
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
-      <span>Tagify</span>
-    </a>
-    <div class="nav-links">
-      {% if current_user.is_authenticated %}
-        <span class="username">Witaj, {{ current_user.username }}</span>
-        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
-      {% else %}
-        <a href="{{ url_for('auth.login') }}">Logowanie</a>
-        <a href="{{ url_for('auth.register') }}">Rejestracja</a>
-      {% endif %}
-    </div>
-  </div>
-</nav>
+  {# celowo pusto – brak navbara na stronie głównej #}
 {% endblock %}
 
 {% block content %}
-<section class="hero">
-  <div class="hero-content">
-    <h1 class="hero-title">Tagify</h1>
-    <p class="hero-subtitle">Klasyfikuj zdjęcia z pomocą sztucznej inteligencji!</p>
-    <div class="hero-buttons">
-      <a href="{{ url_for('auth.register') }}" class="btn">Zarejestruj się</a>
-      <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Zaloguj się</a>
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Tagify</h1>
+      <p class="hero-subtitle">Narzędzie do klasyfikacji zdjęć z wykorzystaniem modeli uczenia maszynowego</p>
+      <div class="hero-buttons">
+        <a href="{{ url_for('auth.login') }}" class="btn">Zaloguj się</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-outline">Załóż konto</a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
 
 {% block scripts %}
