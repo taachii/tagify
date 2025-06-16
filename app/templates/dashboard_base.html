@@ -5,24 +5,34 @@
 {% block navbar %}
 <nav class="navbar">
   <div class="nav-container">
-    <a class="brand" href="{{ url_for('user.dashboard') }}">
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
-      <span>Tagify</span>
-    </a>
 
+    <!-- LEWA STRONA: logo -->
+    <div class="nav-left">
+      <a class="brand" href="{{ url_for('user.dashboard') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
+        <span>Tagify</span>
+      </a>
+    </div>
+
+    <!-- ŚRODEK: username -->
+    <div class="nav-center">
+      {% if current_user.is_authenticated %}
+        <span class="username">Witaj, <i>{{ current_user.username }}!</i></span>
+      {% endif %}
+    </div>
+
+    <!-- PRAWA STRONA: linki -->
     {% if current_user.is_authenticated %}
-      <div class="nav-center">
-        <span class="username">Witaj, {{ current_user.username }}</span>
-      </div>
-      <div class="nav-links">
-        {% if current_user.is_admin() %}
-          <a href="{{ url_for('admin.dashboard') }}">Zarządzaj</a>
-        {% endif %}
-        <a href="{{ url_for('user.dashboard') }}">Klasyfikacja</a>
-        <a href="{{ url_for('user.account_settings') }}">Ustawienia</a>
-        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
-      </div>
+    <div class="nav-right nav-links">
+      {% if current_user.is_admin() %}
+        <a href="{{ url_for('admin.dashboard') }}">Zarządzaj</a>
+      {% endif %}
+      <a href="{{ url_for('user.dashboard') }}">Klasyfikacja</a>
+      <a href="{{ url_for('user.account_settings') }}">Ustawienia</a>
+      <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
+    </div>
     {% endif %}
+
   </div>
 </nav>
 {% endblock %}

@@ -79,56 +79,69 @@ main {
 
 .nav-container {
   width: 90%;
-  max-width: 1000px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   position: relative;
 }
 
-.nav-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: bold;
-  color: #ccc;
-  font-size: 1rem;
-}
-
-.nav-links {
+.nav-left,
+.nav-center,
+.nav-right {
+  flex: 1;
   display: flex;
   align-items: center;
+}
+
+.nav-left {
+  justify-content: flex-start;
+}
+
+.nav-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.nav-right {
+  justify-content: flex-end;
   gap: 1rem;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
   text-decoration: none;
   color: white;
+  gap: 0.5rem;
 }
 
 .brand .logo {
-  height: 64px;
+  height: 42px;
   width: auto;
 }
 
 .nav-links a {
-  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  background-color: transparent;
   color: #ccc;
-  transition: color 0.3s ease;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: white;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 .username {
-  color: #ccc;
+  color: #ffffff;
   font-weight: bold;
+  font-size: 1.2rem;
 }
 
 /* ========================
@@ -468,6 +481,11 @@ body.hero-bg::-webkit-scrollbar {
 /* ========================
    DETALE UŻYTKOWNIKA
 ======================== */
+
+.account-info {
+  margin: 3em;
+}
+
 .account-info p {
   margin-bottom: 1rem;
   font-size: 1rem;
