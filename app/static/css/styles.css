@@ -115,12 +115,13 @@ main {
   font-weight: bold;
   text-decoration: none;
   color: white;
-  gap: 0.5rem;
 }
 
 .brand .logo {
-  height: 42px;
+  height: 48px;
   width: auto;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .nav-links a {
