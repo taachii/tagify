@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from enum import Enum
 from sqlalchemy import Enum as SQLAEnum
+from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 
 class UserRole(Enum):
@@ -34,3 +35,22 @@ class User(db.Model, UserMixin):
 
     def is_researcher(self):
         return self.role == UserRole.RESEARCHER
+
+    @property
+    def used_mb(self):
+        # tymczasowo np. zlicz rozmiar plików użytkownika
+        return 12.4
+
+    @property
+    def max_mb(self):
+        if self.is_admin():
+            return 1000
+        elif self.is_researcher():
+            return 1000
+        return 500
+
+    def check_password(self, password_plaintext):
+        return check_password_hash(self.password, password_plaintext)
+
+    def set_password(self, new_password_plaintext):
+        self.password = generate_password_hash(new_password_plaintext)

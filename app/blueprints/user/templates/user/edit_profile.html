@@ -1,17 +1,35 @@
 {% extends 'dashboard_base.html' %}
 {% block content %}
-<div class="user-panel">
+<div class="auth-container">
   <h2>Edytuj profil</h2>
-  <form method="POST">
+
+  <form method="POST" novalidate>
     {{ form.hidden_tag() }}
 
-    <label for="username">Nazwa użytkownika</label>
-    {{ form.username(class="form-input") }}
+    <div class="form-group">
+      <div class="form-input-wrapper">
+        <i class="fas fa-user"></i>
+        {{ form.username(class="form-input", placeholder="Nazwa użytkownika") }}
+      </div>
+      {% for error in form.username.errors %}
+        <div class="form-error">{{ error }}</div>
+      {% endfor %}
+    </div>
 
-    <label for="email">Adres e-mail</label>
-    {{ form.email(class="form-input") }}
+    <div class="form-group">
+      <div class="form-input-wrapper">
+        <i class="fas fa-envelope"></i>
+        {{ form.email(class="form-input", placeholder="Adres e-mail") }}
+      </div>
+      {% for error in form.email.errors %}
+        <div class="form-error">{{ error }}</div>
+      {% endfor %}
+    </div>
 
-    {{ form.submit(class="btn") }}
+    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+      <a href="{{ url_for('user.account_settings') }}" class="btn btn-outline">Anuluj</a>
+      {{ form.submit(class="btn") }}
+    </div>
   </form>
 </div>
 {% endblock %}

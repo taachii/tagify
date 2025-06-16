@@ -2,7 +2,12 @@
 {% block content %}
 <div class="user-panel">
   {% if uploaded_filename %}
-    <h2>Podsumowanie przesyłania</h2>
+    <div class="edit-header">
+      <a href="{{ url_for('user.dashboard') }}" class="icon-button" title="Wróć do przesyłania">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <h2>Podsumowanie przesyłania</h2>
+    </div>
     <p><strong>Wybrany plik:</strong> {{ uploaded_filename }}</p>
 
     <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}">
@@ -13,7 +18,8 @@
             <option value="resnet50">ResNet50</option>
             <option value="efficientnet">EfficientNet</option>
           </select>
-
+        </div>
+        <div class="model-submit-row">
           <button type="submit" class="btn">Klasyfikuj</button>
         </div>
       </div>

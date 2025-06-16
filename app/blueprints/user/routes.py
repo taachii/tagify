@@ -1,9 +1,10 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
 
 from . import user
+from app import db
 from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm
 
 @user.route('/dashboard', methods=['GET', 'POST'])
@@ -51,7 +52,7 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
-        # db.session.commit() – wstaw gdy masz SQLAlchemy
+        db.session.commit()
         flash("Profil zaktualizowany", "success")
         return redirect(url_for('user.account_settings'))
     return render_template('user/edit_profile.html', form=form)
@@ -65,7 +66,7 @@ def change_password():
             flash("Nieprawidłowe obecne hasło", "danger")
         else:
             current_user.set_password(form.new_password.data)
-            # db.session.commit()
+            db.session.commit()
             flash("Hasło zostało zmienione", "success")
             return redirect(url_for('user.account_settings'))
     return render_template('user/change_password.html', form=form)

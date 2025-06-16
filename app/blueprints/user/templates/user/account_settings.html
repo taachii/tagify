@@ -1,15 +1,18 @@
 {% extends 'dashboard_base.html' %}
+
 {% block content %}
 <div class="user-panel">
   <h2>Ustawienia konta</h2>
 
-  <p><strong>Nazwa użytkownika:</strong> {{ current_user.username }}</p>
-  <p><strong>Email:</strong> {{ current_user.email }}</p>
-  <p><strong>Typ konta:</strong> {{ current_user.account_type | capitalize }}</p>
-  <p><strong>Wykorzystanie przestrzeni:</strong> {{ current_user.used_mb }} MB z {{ current_user.max_mb }} MB</p>
+  <div class="account-info">
+    <p><strong>Nazwa użytkownika:</strong> {{ current_user.username }}</p>
+    <p><strong>Email:</strong> {{ current_user.email }}</p>
+    <p><strong>Typ konta:</strong> {{ current_user.role.value | capitalize }}</p>
+    <p><strong>Wykorzystanie przestrzeni:</strong> {{ current_user.used_mb or 0 }} MB z {{ current_user.max_mb or 0 }} MB</p>
+  </div>
 
-  <div class="account-actions" style="margin-top: 2rem;">
-    <a href="{{ url_for('user.edit_profile') }}" class="btn btn-outline">Edytuj profil</a>
+  <div class="account-actions">
+    <a href="{{ url_for('user.edit_profile') }}" class="btn">Edytuj profil</a>
     <a href="{{ url_for('user.change_password') }}" class="btn btn-outline">Zmień hasło</a>
   </div>
 </div>

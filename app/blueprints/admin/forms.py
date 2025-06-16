@@ -5,14 +5,19 @@ from app.models import UserRole
 
 class EditUserForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[
-        DataRequired(), Length(min=3, max=64)
+        DataRequired(message="Podaj nazwę użytkownika"), 
+        Length(min=3, message="Nazwa użytkownika powinna się składać z co najmniej 3 znaków"),
     ])
+    
     email = StringField('Email', validators=[
-        DataRequired(), Email()
+        DataRequired(message="Podaj adres email"),
+        Email(message="Podaj poprawny adres e-mail")
     ])
+    
     role = SelectField('Rola', choices=[
         (UserRole.ADMIN.value, 'Admin'),
         (UserRole.REGULAR.value, 'Użytkownik'),
         (UserRole.RESEARCHER.value, 'Badacz')
     ], validators=[DataRequired()])
+    
     submit = SubmitField('Zapisz zmiany')

@@ -9,8 +9,22 @@
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
 <body class="{% block body_class %}auth-body{% endblock %}">
+
   {% block background %}{% endblock %}
   {% block navbar %}{% endblock %}
+
+  <!-- Toast flash messages -->
+  <div class="toast-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        {% if category in ['success', 'info'] %}
+        <div class="toast alert {{ category }}">
+          {{ message }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endwith %}
+  </div>
 
   <div class="wrapper">
     <main>
@@ -18,10 +32,14 @@
     </main>
 
     <footer class="footer">
-      <p>&copy; 2025 Tagify – stworzone przez <a href="https://github.com/taachii" target="_blank">taachii</a></p>
+      <p>&copy; 2025 Tagify – stworzone przez <a href="https://github.com/taachii" target="_blank">Adam Chyt</a></p>
     </footer>
   </div>
 
-  {% block scripts %}{% endblock %}
+  {% block scripts %}
+  <script>
+    // Toasty znikają automatycznie dzięki animacjom CSS
+  </script>
+  {% endblock %}
 </body>
 </html>
