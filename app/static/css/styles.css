@@ -343,16 +343,15 @@ body.hero-bg::-webkit-scrollbar {
   background-color: #3a3a4a;
 }
 
-
 /* ========================
    PANEL UŻYTKOWNIKA / ADMINA
 ======================== */
 .user-panel, .admin-panel {
   max-width: 1150px;
   width: 100%;
-  margin: 12em auto 60px auto;
+  margin: 10em auto 60px auto;
   background-color: #1e1e2f;
-  padding: 3rem 2rem;
+  padding: 3rem 3rem;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   color: #eee;
@@ -374,6 +373,65 @@ body.hero-bg::-webkit-scrollbar {
   margin-bottom: 2rem;
   color: #ccc;
 }
+
+/* ========================
+   PAGINACJA + SEARCH BAR
+======================== */
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 1.5em;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.pagination-btn {
+  background-color: #2a2d3e;
+  color: white;
+  border: 1px solid #444;
+  padding: 6px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.pagination-btn:hover {
+  background-color: #3a3e54;
+}
+
+.pagination-btn.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.pagination-info {
+  color: #ccc;
+  font-weight: bold;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  color: #f0f0f0;
+  background-color: #2a2d3e;
+  border: 1px solid #444;
+  border-radius: 5px;
+  margin-bottom: 1.2em;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.4);
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #9b5df0;
+  box-shadow: 0 0 4px #823ce3;
+}
+
 
 /* ========================
    UPLOAD BOX + PREVIEW

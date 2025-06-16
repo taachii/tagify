@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_login import login_required
 from app.decorators import role_required
 from app.models import db, User, UserRole
@@ -11,6 +11,37 @@ from .forms import EditUserForm
 def dashboard():
     users = User.query.all()
     return render_template('admin/dashboard.html', users=users)
+
+
+@admin.route('/dashboard/data')
+@login_required
+@role_required('admin')
+def dashboard_data():
+    page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '', type=str)
+
+    query = User.query
+    if search:
+        query = query.filter(User.username.ilike(f"{search}%"))
+
+    pagination = query.order_by(User.uid.asc()).paginate(page=page, per_page=5)
+    users_data = [{
+        'uid': user.uid,
+        'username': user.username,
+        'email': user.email,
+        'role': user.role.name,
+        'created_at': user.created_at.strftime('%Y-%m-%d %H:%M'),
+        'is_active': user.is_active
+    } for user in pagination.items]
+
+    return jsonify({
+        'users': users_data,
+        'has_next': pagination.has_next,
+        'has_prev': pagination.has_prev,
+        'page': pagination.page,
+        'total_pages': pagination.pages
+    })
+
 
 @admin.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required

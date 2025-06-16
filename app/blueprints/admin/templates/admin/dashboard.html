@@ -3,66 +3,13 @@
 {% block content %}
 <div class="admin-panel">
   <h2 class="admin-title">Użytkownicy</h2>
-  <div class="admin-table-wrapper">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nazwa użytkownika</th>
-          <th>Email</th>
-          <th>Rola</th>
-          <th>Utworzono</th>
-          <th>Status</th>
-          <th>Akcje</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-        <tr class="{{ 'inactive-row' if not user.is_active else '' }}">
-          <td>{{ user.uid }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role.name }}</td>
-          <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-          <td>
-            {% if user.is_active %}
-              <span class="status-active">Aktywny</span>
-            {% else %}
-              <span class="status-inactive">Nieaktywny</span>
-            {% endif %}
-          </td>
-          <td class="action-cell">
-            <!-- Edytuj -->
-            <a href="{{ url_for('admin.edit_user', user_id=user.uid) }}" class="icon-button" title="Edytuj">
-              <i class="fas fa-edit"></i>
-            </a>
 
-            <!-- Aktywuj / Dezaktywuj -->
-            {% if user.is_active %}
-            <form action="{{ url_for('admin.deactivate_user', user_id=user.uid) }}" method="POST" style="display:inline;">
-              <button class="icon-button" title="Dezaktywuj">
-                <i class="fas fa-user-lock"></i>
-              </button>
-            </form>
-            {% else %}
-            <form action="{{ url_for('admin.activate_user', user_id=user.uid) }}" method="POST" style="display:inline;">
-              <button class="icon-button" title="Aktywuj">
-                <i class="fas fa-user-check"></i>
-              </button>
-            </form>
-            {% endif %}
-
-            <!-- Usuń -->
-            <form action="{{ url_for('admin.delete_user', user_id=user.uid) }}" method="POST" style="display:inline;" onsubmit="return confirm('Na pewno chcesz usunąć użytkownika?')">
-              <button class="icon-button danger" title="Usuń">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  <input type="text" id="searchBox" placeholder="Szukaj użytkownika..." class="search-input" />
+  <div id="usersTable"></div>
+  <div id="pagination" class="pagination-buttons"></div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/admin_users.js') }}"></script>
 {% endblock %}
