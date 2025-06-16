@@ -12,7 +12,6 @@ def dashboard():
     users = User.query.all()
     return render_template('admin/dashboard.html', users=users)
 
-
 @admin.route('/dashboard/data')
 @login_required
 @role_required('admin')
@@ -42,14 +41,16 @@ def dashboard_data():
         'total_pages': pagination.pages
     })
 
-
 @admin.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
 @role_required('admin')
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
-    form.role.data = user.role.value
+
+    # Ustawienie pola roli tylko przy GET
+    if request.method == 'GET':
+        form.role.data = user.role.value
 
     if form.validate_on_submit():
         user.username = form.username.data

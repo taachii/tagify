@@ -338,7 +338,7 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 .auth-container .form-input:focus {
-  border-color: #2383e2;
+  border-color: #9b5df0;
   outline: none;
   background-color: #3a3a4a;
 }
@@ -372,6 +372,25 @@ body.hero-bg::-webkit-scrollbar {
   font-size: 1rem;
   margin-bottom: 2rem;
   color: #ccc;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5em;
+  gap: 1rem;
+}
+
+.admin-header .admin-title {
+  margin: 0;
+  font-size: 1.8rem;
+  text-align: left;
+}
+
+.admin-header .search-input {
+  margin-bottom: 0;
 }
 
 /* ========================
