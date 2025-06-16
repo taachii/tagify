@@ -1,36 +1,23 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <title>Tagify – Logowanie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+{% extends 'layout_base.html' %}
 
-</head>
-<body class="auth-body">
+{% block title %}Tagify – Logowanie{% endblock %}
 
-  <nav class="navbar">
-    <div class="nav-container">
-      <a class="brand" href="{{ url_for('core.home') }}">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
-        <span>Tagify</span>
-      </a>
-      <div class="nav-links">
-        {% if current_user.is_authenticated %}
-          <span class="username">Witaj, {{ current_user.username }}</span>
-          <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
-        {% else %}
-          <a href="{{ url_for('auth.login') }}">Logowanie</a>
-          <a href="{{ url_for('auth.register') }}">Rejestracja</a>
-        {% endif %}
-      </div>
+{% block navbar %}
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="{{ url_for('core.home') }}">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
+      <span>Tagify</span>
+    </a>
+    <div class="nav-links">
+      {% if current_user.is_authenticated %}
+        <span class="username">Witaj, {{ current_user.username }}</span>
+        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Logowanie</a>
+        <a href="{{ url_for('auth.register') }}">Rejestracja</a>
+      {% endif %}
     </div>
-  </nav>
-
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-</body>
-</html>
+  </div>
+</nav>
+{% endblock %}

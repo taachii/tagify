@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const bg1 = document.getElementById("bg1");
+  const bg2 = document.getElementById("bg2");
+
+  if (!bg1 || !bg2) return; // nie rób nic, jeśli elementów nie ma
+
   const images = [
     "/static/img/hero1.jpg",
     "/static/img/hero2.jpg",
@@ -9,9 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let index = 0;
   const interval = 12000;
-  
-  const bg1 = document.getElementById("bg1");
-  const bg2 = document.getElementById("bg2");
   let showingBg1 = true;
 
   function crossfade() {

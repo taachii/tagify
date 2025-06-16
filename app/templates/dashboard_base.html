@@ -1,35 +1,28 @@
-<!-- templates/dashboard_base.html -->
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8">
-  <title>Tagify – Panel użytkownika</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+{% extends 'layout_base.html' %}
 
-</head>
-<body class="auth-body">
+{% block title %}Tagify – Panel użytkownika{% endblock %}
 
-  <nav class="navbar">
-    <div class="nav-container">
-      <a class="brand" href="{{ url_for('user.dashboard') }}">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
-        <span>Tagify</span>
-      </a>
-      <div class="nav-links">
-        {% if current_user.is_authenticated %}
-          <span class="username">Witaj, {{ current_user.username }}</span>
-          <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
-        {% endif %}
+{% block navbar %}
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="{{ url_for('user.dashboard') }}">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
+      <span>Tagify</span>
+    </a>
+
+    {% if current_user.is_authenticated %}
+      <div class="nav-center">
+        <span class="username">Witaj, {{ current_user.username }}</span>
       </div>
-    </div>
-  </nav>
-
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-  {% block scripts %}{% endblock scripts %}
-</body>
-</html>
+      <div class="nav-links">
+        {% if current_user.is_admin() %}
+          <a href="{{ url_for('admin.dashboard') }}">Zarządzaj</a>
+        {% endif %}
+        <a href="{{ url_for('user.dashboard') }}">Klasyfikacja</a>
+        <a href="{{ url_for('user.account_settings') }}">Ustawienia</a>
+        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
+      </div>
+    {% endif %}
+  </div>
+</nav>
+{% endblock %}

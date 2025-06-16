@@ -1,4 +1,6 @@
-/* Reset i bazowe */
+/* ========================
+   RESET I BAZA
+======================== */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +12,6 @@ body {
   min-height: 100vh;
 }
 
-/* Tło dla strony głównej */
 body.hero-bg {
   background-size: cover;
   background-repeat: no-repeat;
@@ -26,7 +27,6 @@ body.hero-bg {
   overflow: hidden;
 }
 
-/* Dodane: warstwy do płynnego przejścia */
 .bg-layer {
   position: absolute;
   inset: 0;
@@ -38,21 +38,20 @@ body.hero-bg {
   z-index: 0;
 }
 
-#bg1 {
-  z-index: 1;
-}
+#bg1 { z-index: 1; }
+#bg2 { z-index: 2; }
 
-#bg2 {
-  z-index: 2;
-}
-
-/* Tło dla logowania/rejestracji */
+/* ========================
+   TŁO DLA STRON
+======================== */
 .auth-body {
   background: linear-gradient(135deg, #1f1c2c, #928dab);
   color: #eee;
 }
 
-/* Nawigacja */
+/* ========================
+   NAVBAR
+======================== */
 .navbar {
   background-color: #1e1e2f;
   padding: 1rem 0;
@@ -70,6 +69,22 @@ body.hero-bg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+}
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .brand {
@@ -87,7 +102,6 @@ body.hero-bg {
 }
 
 .nav-links a {
-  margin-left: 1rem;
   text-decoration: none;
   color: #ccc;
   transition: color 0.3s ease;
@@ -98,12 +112,36 @@ body.hero-bg {
 }
 
 .username {
-  margin-right: 1rem;
   color: #ccc;
   font-weight: bold;
 }
 
-/* Hero sekcja */
+/* ========================
+   FOOTER
+======================== */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(30, 30, 47, 0.9);
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 4rem;
+}
+
+.footer a {
+  color: #ff6ac1;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #ffffff;
+}
+
+/* ========================
+   HERO SEKCJA
+======================== */
 .hero {
   display: flex;
   align-items: center;
@@ -144,6 +182,9 @@ body.hero-bg {
   flex-wrap: wrap;
 }
 
+/* ========================
+   BUTTONY
+======================== */
 .btn {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #7f5af0, #ff6ac1);
@@ -171,7 +212,9 @@ body.hero-bg {
   color: #1e1e2f;
 }
 
-/* Formularze (logowanie / rejestracja) */
+/* ========================
+   FORMULARZE (logowanie / rejestracja)
+======================== */
 .auth-container {
   max-width: 500px;
   margin: 160px auto 60px auto;
@@ -194,8 +237,7 @@ body.hero-bg {
 }
 
 .auth-container label {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  margin: 1rem 0 0.5rem;
   font-weight: bold;
   display: block;
 }
@@ -257,23 +299,123 @@ body.hero-bg {
   padding-left: 2.5rem;
 }
 
-.admin-panel {
+/* ========================
+   PANEL UŻYTKOWNIKA / ADMINA
+======================== */
+.user-panel, .admin-panel {
   max-width: 1150px;
+  width: 95%;
   margin: 140px auto 60px auto;
-  padding: 2.5rem;
-  background-color: #1e2132;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  color: #f2f2f2;
-}
-
-.admin-title {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  color: #eee;
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2.1rem;
-  letter-spacing: 0.04em;
 }
 
+.user-panel h2, .admin-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.user-panel p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+/* ========================
+   UPLOAD BOX + PREVIEW
+======================== */
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  border: 2px dashed #9b5df0;
+  border-radius: 12px;
+  padding: 2.5rem 1rem;
+  background-color: rgba(127, 90, 240, 0.08);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin: 0 auto 2rem auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.upload-box:hover {
+  background-color: rgba(127, 90, 240, 0.15);
+}
+
+.upload-box.dragover {
+  background-color: rgba(127, 90, 240, 0.2);
+  border-color: #b47aff;
+}
+
+.upload-box i {
+  color: #b47aff;
+  margin-bottom: 1rem;
+  display: block;
+  font-size: 2rem;
+}
+
+.upload-box p {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 0;
+}
+
+.file-name-preview {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #aaa;
+}
+
+.hidden-input {
+  display: none;
+}
+
+/* ========================
+   KLASIFIKACJA – SELECT
+======================== */
+.classification-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.model-select-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.model-select-row label {
+  font-weight: bold;
+  color: #ccc;
+}
+
+.model-select-row select {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background-color: #2a2a3a;
+  color: #fff;
+  border: 1px solid #555;
+  font-size: 1rem;
+}
+
+.model-select-row select:focus {
+  border-color: #7f5af0;
+  outline: none;
+}
+
+/* ========================
+   TABELA ADMINA
+======================== */
 .admin-table-wrapper {
   overflow-x: auto;
 }
@@ -282,29 +424,8 @@ body.hero-bg {
   width: 100%;
   border-collapse: collapse;
   background-color: #2a2d43;
-  overflow: visible;
   border: 1px solid #3a3d55;
   font-size: 0.95rem;
-}
-
-.admin-table th {
-  background-color: #383c5a;
-  color: #fff;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 1rem 1.2rem;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid #444860;
-}
-
-.admin-table td {
-  padding: 0.9rem 1.2rem;
-  border-bottom: 1px solid #444860;
-}
-
-.admin-table tr:hover {
-  background-color: #333752;
-  transition: background 0.2s ease;
 }
 
 .admin-table th,
@@ -314,24 +435,39 @@ body.hero-bg {
   padding: 1rem 1.2rem;
 }
 
-/* Status aktywności */
+.admin-table th {
+  background-color: #383c5a;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #444860;
+}
+
+.admin-table td {
+  border-bottom: 1px solid #444860;
+}
+
+.admin-table tr:hover {
+  background-color: #333752;
+  transition: background 0.2s ease;
+}
+
+/* ========================
+   STATUSY, IKONY, AKCJE
+======================== */
 .status-active {
-  color: #2ecc71; /* zielony */
+  color: #2ecc71;
   font-weight: bold;
 }
 
 .status-inactive {
-  color: #e74c3c; /* czerwony */
+  color: #e74c3c;
   font-weight: bold;
 }
 
 .inactive-row {
   opacity: 0.5;
-}
-
-.action-cell {
-  text-align: center;
-  position: relative;
 }
 
 .icon-button {
@@ -342,10 +478,10 @@ body.hero-bg {
   font-size: 1.2rem;
   padding: 0.3rem;
   transition: color 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .icon-button:hover {
@@ -367,22 +503,9 @@ body.hero-bg {
   line-height: 1;
 }
 
-.edit-header {
-  display: flex;
-  justify-content: center;
-  gap: 2em;
-  position: relative;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.edit-header h2 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-/* Alerty */
+/* ========================
+   ALERTY
+======================== */
 .alert {
   margin: 1rem auto;
   padding: 1rem;
@@ -397,7 +520,9 @@ body.hero-bg {
 .alert.warning { background-color: #fff3cd; color: #856404; }
 .alert.danger  { background-color: #f8d7da; color: #721c24; }
 
-/* Responsywność */
+/* ========================
+   RESPONSYWNOŚĆ
+======================== */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2.2rem;

@@ -1,18 +1,84 @@
 {% extends 'dashboard_base.html' %}
 {% block content %}
-<div class="auth-container">
-  <h2>Panel użytkownika</h2>
-  <p>Witaj w panelu! Tutaj możesz przesłać plik ZIP zawierający zdjęcia do kategoryzacji.</p>
+<div class="user-panel">
+  {% if uploaded_filename %}
+    <h2>Podsumowanie przesyłania</h2>
+    <p><strong>Wybrany plik:</strong> {{ uploaded_filename }}</p>
 
-  <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+    <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}">
+      <div class="classification-summary">
+        <div class="model-select-row">
+          <label for="model">Wybierz model klasyfikacji:</label>
+          <select name="model" id="model" required>
+            <option value="resnet50">ResNet50</option>
+            <option value="efficientnet">EfficientNet</option>
+          </select>
 
-    <div class="form-group">
-      <i class="fas fa-folder-open"></i>
-      {{ form.zip_file(class="form-input") }}
-    </div>
+          <button type="submit" class="btn">Klasyfikuj</button>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    <h2>Przesyłanie</h2>
+    <p>Prześlij plik ZIP ze zdjęciami do automatycznej kategoryzacji.</p>
 
-    {{ form.submit(class="btn") }}
-  </form>
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div id="drop-zone" class="upload-box">
+        <label for="zip_file">
+          <i class="fas fa-upload fa-2x"></i>
+          <p>Przeciągnij i upuść plik ZIP tutaj lub kliknij, aby wybrać</p>
+          {{ form.zip_file(id="zip_file", class="hidden-input", accept=".zip") }}
+        </label>
+        <p id="file-name" class="file-name-preview"></p>
+      </div>
+
+      {{ form.submit(class="btn") }}
+    </form>
+  {% endif %}
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+  const dropZone = document.getElementById("drop-zone");
+  const fileInput = document.getElementById("zip_file");
+  const fileNameDisplay = document.getElementById("file-name");
+
+  const updateFileName = file => {
+    fileNameDisplay.textContent = file.name;
+  }
+
+  ["dragenter", "dragover"].forEach(evt =>
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    })
+  );
+
+  ["dragleave", "drop"].forEach(evt =>
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+    })
+  );
+
+  dropZone.addEventListener("drop", e => {
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].name.endsWith(".zip")) {
+      fileInput.files = files;
+      updateFileName(files[0]);
+    } else {
+      alert("Dozwolone są tylko pliki ZIP.");
+    }
+  });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      updateFileName(fileInput.files[0]);
+    }
+  });
+</script>
+{% endblock scripts %}
+

@@ -1,4 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'layout_base.html' %}
+
+{% block title %}Tagify – Strona główna{% endblock %}
+{% block body_class %}auth-body hero-bg{% endblock %}
+
+{% block background %}
+<div id="bg-wrapper" class="hero-bg">
+  <div class="bg-layer" id="bg1"></div>
+  <div class="bg-layer" id="bg2"></div>
+</div>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="{{ url_for('core.home') }}">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Tagify logo" class="logo">
+      <span>Tagify</span>
+    </a>
+    <div class="nav-links">
+      {% if current_user.is_authenticated %}
+        <span class="username">Witaj, {{ current_user.username }}</span>
+        <a href="{{ url_for('auth.logout') }}">Wyloguj</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Logowanie</a>
+        <a href="{{ url_for('auth.register') }}">Rejestracja</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
 <section class="hero">
   <div class="hero-content">
@@ -10,4 +41,8 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/background-rotator.js') }}"></script>
 {% endblock %}

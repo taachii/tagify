@@ -1,0 +1,17 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<div class="user-panel">
+  <h2>Edytuj profil</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label for="username">Nazwa użytkownika</label>
+    {{ form.username(class="form-input") }}
+
+    <label for="email">Adres e-mail</label>
+    {{ form.email(class="form-input") }}
+
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endblock %}
