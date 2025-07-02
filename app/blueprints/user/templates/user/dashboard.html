@@ -10,7 +10,7 @@
     </div>
     <p><strong>Wybrany plik:</strong> {{ uploaded_filename }}</p>
 
-    <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}">
+    <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}" id="classifyForm">
       <div class="classification-summary">
         <div class="model-select-row">
           <label for="model">Wybierz model klasyfikacji:</label>
@@ -24,6 +24,13 @@
         </div>
       </div>
     </form>
+
+    <!-- Spinner -->
+    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 2em;">
+      <i class="fas fa-spinner fa-spin" style="font-size: 2em; color: #7f5af0;"></i>
+      <p>Trwa klasyfikacja zdjęć...</p>
+    </div>
+
   {% else %}
     <h2>Przesyłanie</h2>
     <p>Prześlij plik ZIP ze zdjęciami do automatycznej kategoryzacji.</p>
@@ -57,20 +64,20 @@
   }
 
   ["dragenter", "dragover"].forEach(evt =>
-    dropZone.addEventListener(evt, e => {
+    dropZone?.addEventListener(evt, e => {
       e.preventDefault();
       dropZone.classList.add("dragover");
     })
   );
 
   ["dragleave", "drop"].forEach(evt =>
-    dropZone.addEventListener(evt, e => {
+    dropZone?.addEventListener(evt, e => {
       e.preventDefault();
       dropZone.classList.remove("dragover");
     })
   );
 
-  dropZone.addEventListener("drop", e => {
+  dropZone?.addEventListener("drop", e => {
     const files = e.dataTransfer.files;
     if (files.length > 0 && files[0].name.endsWith(".zip")) {
       fileInput.files = files;
@@ -80,11 +87,16 @@
     }
   });
 
-  fileInput.addEventListener("change", () => {
+  fileInput?.addEventListener("change", () => {
     if (fileInput.files.length > 0) {
       updateFileName(fileInput.files[0]);
     }
   });
+
+  // spinner + kursor
+  document.getElementById("classifyForm")?.addEventListener("submit", function () {
+    document.getElementById("loadingSpinner").style.display = "block";
+    document.body.style.cursor = "progress";
+  });
 </script>
 {% endblock scripts %}
-

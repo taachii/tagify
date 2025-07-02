@@ -4,6 +4,7 @@ from enum import Enum
 from sqlalchemy import Enum as SQLAEnum
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
+from uuid import uuid4
 
 class UserRole(Enum):
     ADMIN = "admin"
@@ -54,3 +55,21 @@ class User(db.Model, UserMixin):
 
     def set_password(self, new_password_plaintext):
         self.password = generate_password_hash(new_password_plaintext)
+
+
+class Classification(db.Model):
+    __tablename__ = 'classifications'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.uid'), nullable=False)
+    model_name = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    zip_filename = db.Column(db.String, nullable=False)
+    result_folder = db.Column(db.String, nullable=False)
+    download_token = db.Column(db.String, unique=True, nullable=False)
+    json_filename = db.Column(db.String, nullable=True)
+    is_expired = db.Column(db.Boolean, default=False)
+    total_images = db.Column(db.Integer)
+    completed = db.Column(db.Boolean, default=False)
+
+    user = db.relationship('User', backref='classifications')

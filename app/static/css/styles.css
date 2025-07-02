@@ -557,6 +557,45 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 /* ========================
+   PODSUMOWANIE KLASYFIKACJI
+======================== */
+
+.preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.preview-item {
+  background-color: #2a2a3a;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  color: #eee;
+}
+
+.preview-item img {
+  max-width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.confidence-low {
+  border: 3px solid #e74c3c; /* czerwony */
+}
+
+.confidence-mid {
+  border: 3px solid #f39c12; /* pomarańczowy */
+}
+
+.confidence-high {
+  border: 3px solid #2ecc71; /* zielony */
+}
+
+
+/* ========================
    DETALE UŻYTKOWNIKA
 ======================== */
 

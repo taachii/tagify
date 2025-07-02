@@ -1,0 +1,36 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+<div class="user-panel">
+  <h2>Wyniki klasyfikacji</h2>
+
+  <p><strong>Liczba zdjęć:</strong> {{ results|length }}</p>
+  <p><strong>Model:</strong> {{ model_name|default('---') }}</p>
+
+  <div class="preview-gallery">
+    {% for item in results %}
+    {% set confidence_level = (
+      'low' if item.confidence < 0.4 else
+      'mid' if item.confidence < 0.7 else
+      'high'
+    ) %}
+    <div class="preview-item confidence-{{ confidence_level }}">
+      <img src="{{ url_for('static', filename=item.static_path) }}" alt="{{ item.filename }}">
+      <p><strong>{{ item.filename }}</strong></p>
+      <p>Klasa: {{ item.predicted_label }}</p>
+      <p>Pewność: {{ (item.confidence * 100) | round(1) }}%</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if not classification_expired and download_token %}
+  <div style="margin-top: 2rem;">
+    <a href="{{ url_for('user.download_zip', token=download_token) }}" class="btn">Pobierz ZIP</a>
+  </div>
+  {% endif %}
+
+  <div style="margin-top: 2rem;">
+    <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Historia klasyfikacji</a>
+  </div>
+</div>
+{% endblock %}

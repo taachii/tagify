@@ -1,0 +1,56 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+<div class="user-panel">
+  <h2>Historia klasyfikacji</h2>
+
+  {% if classifications %}
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Model</th>
+        <th>Data</th>
+        <th>Liczba zdjęć</th>
+        <th>Status</th>
+        <th>Akcje</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in classifications %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.model_name }}</td>
+        <td>{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ c.total_images }}</td>
+        <td>
+          {% if c.is_expired %}
+            <span class="status-inactive">Wygasła</span>
+          {% else %}
+            <span class="status-active">Dostępna</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('user.preview_classification', classification_id=c.id) }}" class="icon-button" title="Podgląd">
+            <i class="fas fa-eye"></i>
+          </a>
+          {% if not c.is_expired %}
+          <a href="{{ url_for('user.download_zip', token=c.download_token) }}" class="icon-button success" title="Pobierz ZIP">
+            <i class="fas fa-download"></i>
+          </a>
+          {% endif %}
+          <form action="{{ url_for('user.delete_classification', classification_id=c.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Na pewno chcesz usunąć ten wpis?')">
+            <button class="icon-button danger" title="Usuń">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Brak historii klasyfikacji.</p>
+  {% endif %}
+</div>
+{% endblock %}
