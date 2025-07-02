@@ -21,5 +21,6 @@ instance/
 .DS_Store
 Thumbs.db
 
-# Environment variables
+# ML models
 .envmodels/*.h5
+models/
