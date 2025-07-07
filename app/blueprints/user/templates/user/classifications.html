@@ -11,6 +11,7 @@
         <th>ID</th>
         <th>Model</th>
         <th>Data</th>
+        <th>Plik źródłowy</th>
         <th>Liczba zdjęć</th>
         <th>Status</th>
         <th>Akcje</th>
@@ -22,26 +23,30 @@
         <td>{{ c.id }}</td>
         <td>{{ c.model_name }}</td>
         <td>{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ c.zip_filename }}</td>
         <td>{{ c.total_images }}</td>
         <td>
           {% if c.is_expired %}
             <span class="status-inactive">Wygasła</span>
-          {% else %}
-            {% set delta = ((c.created_at + timedelta(hours=24)) - now).total_seconds() %}
-            {% set hours = (delta // 3600) | int %}
-            {% set minutes = ((delta % 3600) // 60) | int %}
-            <span class="status-active">
-              Dostępna (pozostało: {{ hours }}h {{ minutes }}m)
+          {% elif c.time_left %}
+            <span class="status-active countdown"
+                  data-seconds="{{ c.time_left.total_seconds() | int }}">
+              Dostępna (---)
             </span>
+          {% else %}
+            <span class="status-inactive">Wygasła</span>
           {% endif %}
         </td>
         <td>
           {% if not c.is_expired %}
-          <a href="{{ url_for('user.download_zip', token=c.download_token) }}" class="icon-button success" title="Pobierz ZIP">
+          <a href="{{ url_for('user.download_zip', token=c.download_token) }}"
+             class="icon-button success download-btn" title="Pobierz ZIP">
             <i class="fas fa-download"></i>
           </a>
           {% endif %}
-          <form action="{{ url_for('user.delete_classification', classification_id=c.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Na pewno chcesz usunąć ten wpis?')">
+          <form action="{{ url_for('user.delete_classification', classification_id=c.id) }}"
+                method="POST" style="display:inline;"
+                onsubmit="return confirm('Na pewno chcesz usunąć ten wpis?')">
             <button class="icon-button danger" title="Usuń">
               <i class="fas fa-trash"></i>
             </button>
@@ -55,4 +60,44 @@
     <p>Brak historii klasyfikacji.</p>
   {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function formatTimeLeft(seconds) {
+    if (seconds <= 0) return "Wygasła";
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+
+    return `Dostępna (${h}h ${m}m ${s}s)`;
+  }
+
+  function updateCountdowns() {
+    document.querySelectorAll(".countdown").forEach(el => {
+      let seconds = parseInt(el.getAttribute("data-seconds"));
+      if (isNaN(seconds)) return;
+
+      seconds -= 1;
+      el.setAttribute("data-seconds", seconds);
+      el.textContent = formatTimeLeft(seconds);
+
+      if (seconds <= 0) {
+        el.classList.remove("status-active");
+        el.classList.add("status-inactive");
+        el.textContent = "Wygasła";
+
+        // Ukryj przycisk pobierania ZIP-a, jeśli istnieje
+        const row = el.closest("tr");
+        if (row) {
+          const downloadBtn = row.querySelector(".download-btn");
+          if (downloadBtn) downloadBtn.remove();
+        }
+      }
+    });
+  }
+
+  setInterval(updateCountdowns, 1000);
+</script>
 {% endblock %}

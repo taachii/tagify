@@ -33,7 +33,7 @@
 
     {% if not classification_expired and download_token %}
     <div style="margin-top: 2rem;">
-      <button type="submit" class="btn">Wygeneruj ZIP z poprawkami</button>
+      <button type="submit" class="btn">Wygeneruj ZIP do pobrania</button>
     </div>
     {% endif %}
   </form>
@@ -42,10 +42,6 @@
   <div id="generatingSpinner" style="display: none; text-align: center; margin-top: 2em; margin-bottom: 2em;">
     <i class="fas fa-spinner fa-spin" style="font-size: 2em; color: #7f5af0;"></i>
     <p style="margin-top: 2em;">Trwa generowanie ZIP-a...</p>
-  </div>
-
-  <div style="margin-top: 2rem;">
-    <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Historia klasyfikacji</a>
   </div>
 </div>
 {% endblock %}

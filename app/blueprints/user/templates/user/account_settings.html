@@ -8,7 +8,6 @@
     <p><strong>Nazwa użytkownika:</strong> {{ current_user.username }}</p>
     <p><strong>Email:</strong> {{ current_user.email }}</p>
     <p><strong>Typ konta:</strong> {{ current_user.role.value | capitalize }}</p>
-    <p><strong>Wykorzystanie przestrzeni:</strong> {{ current_user.used_mb or 0 }} MB z {{ current_user.max_mb or 0 }} MB</p>
   </div>
 
   <div class="account-actions">

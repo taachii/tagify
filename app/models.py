@@ -37,18 +37,6 @@ class User(db.Model, UserMixin):
     def is_researcher(self):
         return self.role == UserRole.RESEARCHER
 
-    @property
-    def used_mb(self):
-        return 12.4
-
-    @property
-    def max_mb(self):
-        if self.is_admin():
-            return 1000
-        elif self.is_researcher():
-            return 1000
-        return 500
-
     def check_password(self, password_plaintext):
         return check_password_hash(self.password, password_plaintext)
 
@@ -75,7 +63,7 @@ class Classification(db.Model):
 
     @property
     def time_left(self):
-        expiration_time = self.created_at + timedelta(hours=24)
+        expiration_time = self.created_at + timedelta(minutes=3)
         now = datetime.utcnow()
         remaining = expiration_time - now
         if remaining.total_seconds() <= 0:

@@ -12,9 +12,34 @@ import tempfile
 from . import user
 from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm
 
+
+def expire_user_classifications_after_login(user):
+    from app.models import Classification
+    jobs = Classification.query.filter_by(user_id=user.uid, is_expired=False).all()
+    expired = []
+
+    for job in jobs:
+        if job.time_left is None:
+            job.is_expired = True
+            expired.append(job)
+
+            # usuń ZIP jeśli istnieje
+            try:
+                zip_path = os.path.join(current_app.root_path, "..", "instance", "downloads", f"{job.download_token}.zip")
+                if os.path.exists(zip_path):
+                    os.remove(zip_path)
+                    print(f"Usunięto ZIP: {zip_path}")
+            except Exception as e:
+                print(f"Błąd przy usuwaniu ZIP-a ID={job.id}: {e}")
+
+    if expired:
+        db.session.commit()
+
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+    expire_user_classifications_after_login(current_user)
+
     form = ZipUploadForm()
     uploaded_filename = request.args.get("uploaded")
 
@@ -47,8 +72,18 @@ def classify():
         flash("Wybrany model nie jest dostępny.", "danger")
         return redirect(url_for('user.dashboard'))
 
+    # Klasyfikacja zdjęć z ZIP-a
     results, session_id = classify_zip(zip_path, model_path)
 
+    # Usuń przesłany plik ZIP po zakończonej klasyfikacji
+    try:
+        if os.path.exists(zip_path):
+            os.remove(zip_path)
+            print(f"🧹 Usunięto przesłany ZIP: {zip_path}")
+    except Exception as e:
+        print(f"⚠️ Błąd przy usuwaniu ZIP-a: {e}")
+
+    # Zapisz klasyfikację w bazie
     classification = Classification(
         user_id=current_user.uid,
         model_name=model_name,
@@ -69,6 +104,7 @@ def classify():
         download_token=classification.download_token,
         classification_expired=False
     )
+
 
 
 @user.route('/generate_zip/<token>', methods=['POST'])
@@ -199,12 +235,14 @@ def download_zip(token):
         flash("Brak pliku ZIP.", "warning")
         return redirect(url_for('user.classifications'))
 
-    return send_file(zip_output_path, as_attachment=True)
+    return send_file(zip_output_path, as_attachment=True, download_name="classified.zip")
 
 
 @user.route('/classifications')
 @login_required
 def classifications():
+    expire_user_classifications_after_login(current_user)
+
     jobs = Classification.query.filter_by(user_id=current_user.uid).order_by(Classification.created_at.desc()).all()
     return render_template(
         'user/classifications.html', 
@@ -218,20 +256,28 @@ def classifications():
 @login_required
 def delete_classification(classification_id):
     job = Classification.query.get_or_404(classification_id)
+    
     if job.user_id != current_user.uid:
         flash("Brak dostępu do tego wpisu.", "danger")
         return redirect(url_for('user.classifications'))
 
     try:
+        # Usuń folder wynikowy
         if os.path.exists(job.result_folder):
             shutil.rmtree(job.result_folder)
+
+        # Usuń powiązany plik ZIP
+        zip_path = os.path.join(current_app.root_path, "..", "instance", "downloads", f"{job.download_token}.zip")
+        if os.path.exists(zip_path):
+            os.remove(zip_path)
+
     except Exception as e:
         print(f"Błąd podczas usuwania plików: {e}")
 
     db.session.delete(job)
     db.session.commit()
 
-    flash("Wpis został usunięty.", "success")
+    flash("Wpis i plik ZIP zostały usunięte.", "success")
     return redirect(url_for('user.classifications'))
 
 
