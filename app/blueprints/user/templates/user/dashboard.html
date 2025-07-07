@@ -12,23 +12,16 @@
 
     <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}" id="classifyForm">
       <div class="classification-summary">
-        <div class="model-select-row">
-          <label for="model">Wybierz model klasyfikacji:</label>
-          <select name="model" id="model" required>
-            <option value="resnet50">ResNet50</option>
-            <option value="efficientnet">EfficientNet</option>
-          </select>
-        </div>
         <div class="model-submit-row">
-          <button type="submit" class="btn">Klasyfikuj</button>
+          <button type="submit" class="btn">Rozpocznij klasyfikację</button>
         </div>
       </div>
     </form>
 
     <!-- Spinner -->
-    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 2em;">
+    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 2em; margin-bottom: 2em;">
       <i class="fas fa-spinner fa-spin" style="font-size: 2em; color: #7f5af0;"></i>
-      <p>Trwa klasyfikacja zdjęć...</p>
+      <p style="margin-top: 2em;">Trwa klasyfikacja zdjęć...</p>
     </div>
 
   {% else %}

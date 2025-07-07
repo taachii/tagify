@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from sqlalchemy import Enum as SQLAEnum
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -39,7 +39,6 @@ class User(db.Model, UserMixin):
 
     @property
     def used_mb(self):
-        # tymczasowo np. zlicz rozmiar plików użytkownika
         return 12.4
 
     @property
@@ -73,3 +72,12 @@ class Classification(db.Model):
     completed = db.Column(db.Boolean, default=False)
 
     user = db.relationship('User', backref='classifications')
+
+    @property
+    def time_left(self):
+        expiration_time = self.created_at + timedelta(hours=24)
+        now = datetime.utcnow()
+        remaining = expiration_time - now
+        if remaining.total_seconds() <= 0:
+            return None
+        return remaining

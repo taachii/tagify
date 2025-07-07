@@ -453,7 +453,7 @@ body.hero-bg::-webkit-scrollbar {
 
 
 /* ========================
-   UPLOAD BOX + PREVIEW
+   UPLOAD BOX
 ======================== */
 .upload-box {
   display: flex;
@@ -503,7 +503,7 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 /* ========================
-   KLASIFIKACJA – SELECT
+   KLASIFIKACJA
 ======================== */
 .classification-summary {
   display: flex;
@@ -512,36 +512,33 @@ body.hero-bg::-webkit-scrollbar {
   gap: 1.5rem;
 }
 
-.model-select-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.model-select-row label {
-  font-weight: bold;
-  color: #ccc;
-}
-
-.model-select-row select {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
+.preview-item select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
   background-color: #2a2a3a;
-  color: #fff;
+  color: #eee;
   border: 1px solid #555;
-  font-size: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  appearance: none;
+  transition: border 0.2s ease, background 0.2s ease;
 }
 
-.model-select-row select:focus {
-  border-color: #7f5af0;
+.preview-item select:focus {
+  border-color: #9b5df0;
   outline: none;
+  background-color: #353546;
 }
 
-.model-submit-row {
-  display: flex;
-  justify-content: center;
+.preview-item label {
+  display: block;
+  font-size: 0.85rem;
+  color: #bbb;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
 }
 
 .edit-header {

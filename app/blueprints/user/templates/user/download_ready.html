@@ -1,0 +1,20 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+<div class="user-panel">
+  <h2>ZIP gotowy do pobrania</h2>
+
+  <p>Plik ZIP został wygenerowany na podstawie Twoich poprawek.</p>
+  <p><strong>Liczba zdjęć:</strong> {{ total_images }}</p>
+  <p><strong>Model:</strong> {{ model_name|default('---') }}</p>
+  <p><strong>Dostępność ZIP-a:</strong> 24 godziny</p>
+
+  <div style="margin: 2rem 0;">
+    <a href="{{ url_for('user.download_zip', token=download_token) }}" class="btn">
+      Pobierz ZIP
+    </a>
+  </div>
+
+  <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Powrót do historii klasyfikacji</a>
+</div>
+{% endblock %}

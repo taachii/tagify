@@ -27,13 +27,15 @@
           {% if c.is_expired %}
             <span class="status-inactive">Wygasła</span>
           {% else %}
-            <span class="status-active">Dostępna</span>
+            {% set delta = ((c.created_at + timedelta(hours=24)) - now).total_seconds() %}
+            {% set hours = (delta // 3600) | int %}
+            {% set minutes = ((delta % 3600) // 60) | int %}
+            <span class="status-active">
+              Dostępna (pozostało: {{ hours }}h {{ minutes }}m)
+            </span>
           {% endif %}
         </td>
         <td>
-          <a href="{{ url_for('user.preview_classification', classification_id=c.id) }}" class="icon-button" title="Podgląd">
-            <i class="fas fa-eye"></i>
-          </a>
           {% if not c.is_expired %}
           <a href="{{ url_for('user.download_zip', token=c.download_token) }}" class="icon-button success" title="Pobierz ZIP">
             <i class="fas fa-download"></i>

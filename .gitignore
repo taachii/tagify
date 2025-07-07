@@ -24,3 +24,5 @@ Thumbs.db
 # ML models
 .envmodels/*.h5
 models/
+
+classified_temp/
