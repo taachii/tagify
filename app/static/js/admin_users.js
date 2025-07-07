@@ -1,5 +1,6 @@
 let currentPage = 1;
 let currentSearch = '';
+let pendingDeleteForm = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchBox');
@@ -10,6 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 300));
 
   loadUsers();
+
+  document.getElementById("confirmYes")?.addEventListener("click", () => {
+    if (pendingDeleteForm) pendingDeleteForm.submit();
+    closeConfirmModal();
+  });
+
+  document.getElementById("confirmNo")?.addEventListener("click", () => {
+    closeConfirmModal();
+  });
 });
 
 function debounce(func, wait) {
@@ -67,8 +77,8 @@ function renderTable(users) {
               >
                 <i class="fas ${user.is_active ? 'fa-user-lock' : 'fa-user-check'}"></i>
               </button>
-              <form action="/admin/dashboard/user/${user.uid}/delete" method="POST" style="display:inline;" onsubmit="return confirm('Na pewno chcesz usunąć użytkownika?')">
-                <button class="icon-button danger" title="Usuń">
+              <form id="delete-user-${user.uid}" action="/admin/dashboard/user/${user.uid}/delete" method="POST" style="display:inline;">
+                <button type="button" class="icon-button danger" title="Usuń" onclick="openConfirmModal('Na pewno chcesz usunąć użytkownika?', document.getElementById('delete-user-${user.uid}'))">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </form>
@@ -120,3 +130,14 @@ document.addEventListener('click', function (event) {
     });
   }
 });
+
+function openConfirmModal(message, form) {
+  document.getElementById("confirmText").textContent = message;
+  document.getElementById("confirmModal").classList.remove("hidden");
+  pendingDeleteForm = form;
+}
+
+function closeConfirmModal() {
+  document.getElementById("confirmModal").classList.add("hidden");
+  pendingDeleteForm = null;
+}

@@ -44,10 +44,12 @@
             <i class="fas fa-download"></i>
           </a>
           {% endif %}
-          <form action="{{ url_for('user.delete_classification', classification_id=c.id) }}"
-                method="POST" style="display:inline;"
-                onsubmit="return confirm('Na pewno chcesz usunąć ten wpis?')">
-            <button class="icon-button danger" title="Usuń">
+          <form id="delete-form-{{ c.id }}" action="{{ url_for('user.delete_classification', classification_id=c.id) }}" method="POST" style="display:inline;">
+            <button 
+              type="button" 
+              class="icon-button danger" 
+              title="Usuń"
+              onclick="openConfirmModal('Na pewno chcesz usunąć ten wpis?', document.getElementById('delete-form-{{ c.id }}'))">
               <i class="fas fa-trash"></i>
             </button>
           </form>

@@ -27,7 +27,7 @@ function renderPreview(items) {
       <div class="preview-item confidence-${getConfidenceLevel(item.confidence)}">
         <img src="/static/${item.static_path}" alt="${item.filename}">
         <p><strong>${item.filename}</strong></p>
-        <p class="confidence-color-${getConfidenceLevel(item.confidence)}">
+        <p class="confidence-${getConfidenceLevel(item.confidence)}">
           Pewność: ${(item.confidence * 100).toFixed(1)}%
         </p>
         <label for="corrections_${index}">Popraw klasę:</label>
