@@ -370,8 +370,28 @@ body.hero-bg::-webkit-scrollbar {
 
 .user-panel p {
   font-size: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: #ccc;
+}
+
+.preview-item p {
+  margin-bottom: 0.2rem;
+}
+
+.preview-item p:first-of-type {
+  margin-top: 0.5rem;
+}
+
+.preview-item p.confidence-low {
+  color: #e74c3c;
+}
+
+.preview-item p.confidence-mid {
+  color: #f39c12;
+}
+
+.preview-item p.confidence-high {
+  color: #2ecc71;
 }
 
 .admin-header {
@@ -579,16 +599,26 @@ body.hero-bg::-webkit-scrollbar {
   border-radius: 6px;
 }
 
-.confidence-low {
-  border: 3px solid #e74c3c; /* czerwony */
+/* Ramki tylko dla całych kart */
+.preview-item.confidence-low {
+  border: 3px solid #e74c3c;
+}
+.preview-item.confidence-mid {
+  border: 3px solid #f39c12;
+}
+.preview-item.confidence-high {
+  border: 3px solid #2ecc71;
 }
 
-.confidence-mid {
-  border: 3px solid #f39c12; /* pomarańczowy */
+/* Kolor tekstu tylko dla paska pewności */
+.confidence-color-low {
+  color: #e74c3c;
 }
-
-.confidence-high {
-  border: 3px solid #2ecc71; /* zielony */
+.confidence-color-mid {
+  color: #f39c12;
+}
+.confidence-color-high {
+  color: #2ecc71;
 }
 
 

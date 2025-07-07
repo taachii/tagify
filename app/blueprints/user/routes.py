@@ -1,7 +1,7 @@
-from flask import render_template, redirect, url_for, flash, request, send_file, current_app
+from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify
 from flask_login import login_required, current_user
 from app.models import Classification
-import os, json, shutil
+import os, json, shutil, math
 from app.utils.classifier import classify_zip
 from werkzeug.utils import secure_filename
 from uuid import uuid4
@@ -105,6 +105,39 @@ def classify():
         classification_expired=False
     )
 
+
+@user.route('/classification/preview/data')
+@login_required
+def classification_preview_data():
+    token = request.args.get("token")
+    page = int(request.args.get("page", 1))
+    per_page = 10
+
+    job = Classification.query.filter_by(download_token=token).first_or_404()
+
+    if job.user_id != current_user.uid:
+        return jsonify({"error": "Brak dostępu"}), 403
+
+    json_path = os.path.join(job.result_folder, job.json_filename or "results.json")
+    if not os.path.exists(json_path):
+        return jsonify({"error": "Brak wyników"}), 404
+
+    with open(json_path, "r", encoding="utf-8") as f:
+        all_results = json.load(f)
+
+    total = len(all_results)
+    total_pages = math.ceil(total / per_page)
+    start = (page - 1) * per_page
+    end = start + per_page
+
+    results = all_results[start:end]
+
+    return jsonify({
+        "results": results,
+        "page": page,
+        "total_pages": total_pages,
+        "token": token
+    })
 
 
 @user.route('/generate_zip/<token>', methods=['POST'])
