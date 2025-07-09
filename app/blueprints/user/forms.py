@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField
+from wtforms import SubmitField, StringField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from flask_wtf.file import FileField, FileAllowed, FileRequired
+from flask_login import current_user
 
 class ZipUploadForm(FlaskForm):
     zip_file = FileField('Plik ZIP ze zdjęciami', validators=[
@@ -9,6 +10,10 @@ class ZipUploadForm(FlaskForm):
         FileAllowed(['zip'], message="Dozwolone są tylko pliki ZIP.")
     ])
     submit = SubmitField('Prześlij')
+
+class ModelSelectionForm(FlaskForm):
+    model = SelectField('Wybierz model', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Rozpocznij klasyfikację')
 
 class EditProfileForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[

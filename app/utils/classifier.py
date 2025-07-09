@@ -3,6 +3,7 @@ import os
 import shutil
 import uuid
 import numpy as np
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from pathlib import Path
@@ -10,25 +11,36 @@ import json
 
 TEMP_DIR = Path("instance/tmp_classify")
 STATIC_DIR = Path("app/static/classified_temp")
+MODELS_DIR = Path("models")
 IMG_SIZE = (224, 224)
 
+def get_available_models():
+    available = []
+    if not MODELS_DIR.exists():
+        return []
+
+    for model_dir in MODELS_DIR.iterdir():
+        if model_dir.is_dir():
+            keras_files = list(model_dir.glob("*.keras"))  # zmiana z .h5 na .keras
+            if keras_files:
+                model_path = str(keras_files[0])
+                available.append((model_dir.name, model_path))
+    return sorted(available, key=lambda x: x[0])
 
 def get_preprocess_function(model_name):
     if model_name == "resnet50":
         from tensorflow.keras.applications.resnet50 import preprocess_input
-    elif model_name == "efficientnet":
+    elif model_name in ("efficientnet", "efficientnetb0"):
         from tensorflow.keras.applications.efficientnet import preprocess_input
     else:
         raise ValueError(f"Nieznana nazwa modelu: {model_name}")
     return preprocess_input
-
 
 def preprocess_image(img_path, preprocess_fn):
     img = image.load_img(img_path, target_size=IMG_SIZE)
     img_array = image.img_to_array(img)
     img_array = preprocess_fn(img_array)
     return np.expand_dims(img_array, axis=0)
-
 
 def classify_zip(zip_path, model_path):
     session_id = str(uuid.uuid4())
@@ -41,7 +53,8 @@ def classify_zip(zip_path, model_path):
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(session_dir)
 
-    model = load_model(model_path)
+    # Ładowanie modelu w formacie .keras - wystarczy load_model bez custom_objects
+    model = load_model(model_path, compile=False)
 
     # Wczytaj class_indices z history.json
     history_path = Path(model_path).parent / "history.json"
@@ -78,9 +91,7 @@ def classify_zip(zip_path, model_path):
                 "static_path": f"classified_temp/{session_id}/{img_path.name}"
             })
 
-            # Debug: wypisz predykcje
             print(f"{img_path.name} → {preds.tolist()} → {predicted_idx} → {predicted_label}")
-
         except Exception as e:
             print(f"Błąd przy przetwarzaniu {img_path.name}: {e}")
 
@@ -88,11 +99,10 @@ def classify_zip(zip_path, model_path):
     with open(results_json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
-    # ✅ Wyczyść tymczasowy folder po zakończeniu przetwarzania
     try:
         shutil.rmtree(session_dir)
         print(f"Usunięto tymczasowy folder: {session_dir}")
     except Exception as e:
-        print(f"Błąd podczas usuwania {session_dir}: {e}")    
+        print(f"Błąd podczas usuwania {session_dir}: {e}")
 
     return results, session_id

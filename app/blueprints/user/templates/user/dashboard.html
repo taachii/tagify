@@ -12,6 +12,18 @@
 
     <form method="POST" action="{{ url_for('user.classify', filename=uploaded_filename) }}" id="classifyForm">
       <div class="classification-summary">
+
+        {% if current_user.is_researcher() %}
+          <div class="form-group">
+            <select id="modelDropdown" name="model_path" class="form-select" required>
+              <option value="" disabled selected style="text-align: center">Wybierz model</option>
+              {% for name, path in available_models %}
+                <option style="text-align: center" value="{{ path }}">{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
         <div class="model-submit-row">
           <button type="submit" class="btn">Rozpocznij klasyfikację</button>
         </div>

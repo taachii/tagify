@@ -10,22 +10,28 @@ from datetime import datetime, timedelta
 import tempfile
 
 from . import user
-from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm
+from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm
 
-from app.utils.classifier import classify_zip
+from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
 
+DEFAULT_MODEL_PATH = "models/resnet50_feature_ext_ep40_bs16_augFalse/resnet50_feature_ext_ep40_bs16_augFalse.h5"
 
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     expire_user_classifications_after_login(current_user)
 
-    form = ZipUploadForm()
+    upload_form = ZipUploadForm()
+    model_form = None
     uploaded_filename = request.args.get("uploaded")
 
-    if form.validate_on_submit():
-        zip_data = form.zip_file.data
+    if current_user.is_researcher():
+        model_form = ModelSelectionForm()
+        model_form.model.choices = get_available_models()
+
+    if upload_form.validate_on_submit():
+        zip_data = upload_form.zip_file.data
         filename = secure_filename(zip_data.filename)
         upload_path = os.path.join('instance/uploads', filename)
         os.makedirs(os.path.dirname(upload_path), exist_ok=True)
@@ -34,23 +40,25 @@ def dashboard():
         flash('Plik został przesłany poprawnie!', 'success')
         return redirect(url_for('user.dashboard', uploaded=filename))
 
-    return render_template('user/dashboard.html', form=form, uploaded_filename=uploaded_filename)
+    return render_template(
+        'user/dashboard.html', 
+        form=upload_form,
+        model_form=model_form,
+        uploaded_filename=uploaded_filename,
+        available_models=get_available_models() if current_user.is_researcher() else None
+    )
 
 
 @user.route('/classify', methods=['POST'])
 @login_required
 def classify():
     filename = request.args.get("filename")
-    model_name = "resnet50"
     zip_path = os.path.join('instance/uploads', filename)
 
-    model_mapping = {
-        "resnet50": "models/resnet50_feature_ext_ep40_bs16_augFalse/resnet50_feature_ext_ep40_bs16_augFalse.h5",
-    }
+    model_path = request.form.get("model_path", "") or DEFAULT_MODEL_PATH
 
-    model_path = model_mapping.get(model_name)
-    if not model_path or not os.path.exists(model_path):
-        flash("Wybrany model nie jest dostępny.", "danger")
+    if not os.path.exists(model_path):
+        flash("Wybrany model nie istnieje.", "danger")
         return redirect(url_for('user.dashboard'))
 
     # Klasyfikacja zdjęć z ZIP-a
@@ -60,14 +68,13 @@ def classify():
     try:
         if os.path.exists(zip_path):
             os.remove(zip_path)
-            print(f"🧹 Usunięto przesłany ZIP: {zip_path}")
     except Exception as e:
-        print(f"⚠️ Błąd przy usuwaniu ZIP-a: {e}")
+        print(f"Błąd przy usuwaniu ZIP-a: {e}")
 
     # Zapisz klasyfikację w bazie
     classification = Classification(
         user_id=current_user.uid,
-        model_name=model_name,
+        model_name=os.path.basename(model_path),
         zip_filename=filename,
         result_folder=os.path.join("app", "static", "classified_temp", session_id),
         download_token=str(uuid4()),
@@ -81,7 +88,7 @@ def classify():
     return render_template(
         "user/classification_preview.html",
         results=results,
-        model_name=model_name,
+        model_name=os.path.basename(model_path),
         download_token=classification.download_token,
         classification_expired=False
     )
@@ -129,29 +136,29 @@ def generate_zip(token):
 
     if job.user_id != current_user.uid:
         flash("Brak dostępu.", "danger")
-        print("⛔ Brak dostępu – użytkownik nie jest właścicielem.")
+        print("Brak dostępu – użytkownik nie jest właścicielem.")
         return redirect(url_for('user.classifications'))
 
     json_path = os.path.join(job.result_folder, job.json_filename or "results.json")
     if not os.path.exists(json_path):
         flash("Brak wyników do spakowania.", "warning")
-        print("⚠️ Brak pliku results.json – przerwano.")
+        print("Brak pliku results.json – przerwano.")
         return redirect(url_for('user.dashboard'))
 
     try:
-        print("📄 Wczytywanie results.json...")
+        print("Wczytywanie results.json...")
         with open(json_path, "r", encoding="utf-8") as f:
             results = json.load(f)
-        print(f"✅ Załadowano {len(results)} rekordów z results.json")
+        print(f"Załadowano {len(results)} rekordów z results.json")
 
-        print("🛠️ Pobieranie poprawek z formularza...")
+        print("Pobieranie poprawek z formularza...")
         corrections = {}
         for key in request.form:
             if key.startswith("corrections[") and key.endswith("]"):
                 filename = key[len("corrections["):-1]
                 corrections[filename] = request.form[key]
 
-        print(f"🔁 Zastosowywanie poprawek do wyników ({len(corrections)} pozycji)...")
+        print(f"Zastosowywanie poprawek do wyników ({len(corrections)} pozycji)...")
         for r in results:
             if r["filename"] in corrections:
                 old = r["predicted_label"]
@@ -159,12 +166,12 @@ def generate_zip(token):
                 r["predicted_label"] = new
                 print(f"🖊️ {r['filename']}: {old} → {new}")
 
-        print("💾 Nadpisywanie results.json z poprawkami...")
+        print("Nadpisywanie results.json z poprawkami...")
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
-        print("✅ results.json zaktualizowany")
+        print("results.json zaktualizowany")
 
-        print("📁 Przygotowywanie struktury katalogów klas...")
+        print("Przygotowywanie struktury katalogów klas...")
         with tempfile.TemporaryDirectory() as temp_dir:
             for r in results:
                 klas = r["predicted_label"]
@@ -179,20 +186,20 @@ def generate_zip(token):
             os.makedirs(downloads_dir, exist_ok=True)
             zip_output_path = os.path.join(downloads_dir, f"{token}.zip")
 
-            print("📦 Tworzenie ZIP-a...")
+            print("Tworzenie ZIP-a...")
             shutil.make_archive(zip_output_path.replace(".zip", ""), 'zip', temp_dir)
-            print("✅ ZIP utworzony")
+            print("ZIP utworzony")
 
         job.completed = True
         db.session.commit()
-        print("🗂️ Status zapisany w bazie danych")
+        print("Status zapisany w bazie danych")
 
     except Exception as e:
-        print("❌ Błąd przy generowaniu ZIP-a:", e)
+        print("Błąd przy generowaniu ZIP-a:", e)
         flash("Błąd przy generowaniu ZIP-a.", "danger")
         return redirect(url_for('user.dashboard'))
 
-    print("✅ [KONIEC] ZIP gotowy, redirect na download_ready")
+    print("[KONIEC] ZIP gotowy, redirect na download_ready")
     return redirect(url_for('user.download_ready', token=token))
 
 

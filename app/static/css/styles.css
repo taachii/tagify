@@ -302,6 +302,24 @@ body.hero-bg::-webkit-scrollbar {
   color: #ffffff;
 }
 
+.form-select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  background-color: #2a2a3a;
+  color: #eee;
+  border: 1px solid #666;
+  appearance: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.form-select:focus {
+  border-color: #9b5df0;
+  outline: none;
+  background-color: #3a3a4a;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
 }

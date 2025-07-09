@@ -38,7 +38,7 @@ def login():
             if user.is_admin():
                 return redirect(url_for('admin.dashboard'))
             elif user.is_researcher():
-                return redirect(url_for('researcher.dashboard'))
+                return redirect(url_for('user.dashboard'))
             else:
                 return redirect(url_for('user.dashboard'))
 
