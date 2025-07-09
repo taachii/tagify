@@ -125,18 +125,39 @@ main {
 }
 
 .nav-links a {
-  padding: 0.4rem 0.9rem;
-  border-radius: 6px;
-  background-color: transparent;
-  color: #ccc;
-  text-decoration: none;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   font-weight: 500;
+  text-decoration: none;
+  color: #ddd;
   transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #ff6ac1;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 70%;
 }
 
 .nav-links a:hover {
-  background-color: rgba(255, 255, 255, 0.08);
   color: #fff;
+}
+
+.nav-links a.active {
+  color: #ff6ac1;
+  font-weight: 600;
 }
 
 .username {
@@ -365,8 +386,7 @@ body.hero-bg::-webkit-scrollbar {
    PANEL UŻYTKOWNIKA / ADMINA
 ======================== */
 .user-panel, .admin-panel {
-  max-width: 1150px;
-  width: 100%;
+  max-width: 75%;
   margin: 10em auto 60px auto;
   background-color: #1e1e2f;
   padding: 3rem 3rem;
@@ -376,13 +396,17 @@ body.hero-bg::-webkit-scrollbar {
   text-align: center;
 }
 
+.wide-panel {
+  width: 70% !important;
+}
+
 .user-panel {
-  width: 50% !important;
+  width: 50%;
 }
 
 .user-panel h2, .admin-title {
   font-size: 1.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5em;
   text-align: center;
 }
 

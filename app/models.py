@@ -63,7 +63,7 @@ class Classification(db.Model):
 
     @property
     def time_left(self):
-        expiration_time = self.created_at + timedelta(minutes=3)
+        expiration_time = self.created_at + timedelta(hours=24)
         now = datetime.utcnow()
         remaining = expiration_time - now
         if remaining.total_seconds() <= 0:

@@ -12,7 +12,9 @@ class ZipUploadForm(FlaskForm):
     submit = SubmitField('Prześlij')
 
 class ModelSelectionForm(FlaskForm):
-    model = SelectField('Wybierz model', choices=[], validators=[DataRequired()])
+    model = SelectField('Wybierz model', choices=[], validators=[
+        DataRequired(message="Wybierz model z listy.")
+    ])
     submit = SubmitField('Rozpocznij klasyfikację')
 
 class EditProfileForm(FlaskForm):

@@ -1,7 +1,7 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Tagify – Historia klasyfikacji{% endblock %}
 {% block content %}
-<div class="user-panel">
+<div class="user-panel wide-panel">
   <h2>Historia klasyfikacji</h2>
 
   {% if classifications %}
@@ -9,7 +9,9 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Model</th>
+        {% if current_user.is_researcher() %}
+          <th>Model</th>
+        {% endif %}
         <th>Data</th>
         <th>Plik źródłowy</th>
         <th>Liczba zdjęć</th>
@@ -21,7 +23,9 @@
       {% for c in classifications %}
       <tr>
         <td>{{ c.id }}</td>
-        <td>{{ c.model_name }}</td>
+        {% if current_user.is_researcher() %}
+          <td>{{ c.model_name }}</td>
+        {% endif %}
         <td>{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
         <td>{{ c.zip_filename }}</td>
         <td>{{ c.total_images }}</td>
@@ -65,41 +69,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-  function formatTimeLeft(seconds) {
-    if (seconds <= 0) return "Wygasła";
-
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-
-    return `Dostępna (${h}h ${m}m ${s}s)`;
-  }
-
-  function updateCountdowns() {
-    document.querySelectorAll(".countdown").forEach(el => {
-      let seconds = parseInt(el.getAttribute("data-seconds"));
-      if (isNaN(seconds)) return;
-
-      seconds -= 1;
-      el.setAttribute("data-seconds", seconds);
-      el.textContent = formatTimeLeft(seconds);
-
-      if (seconds <= 0) {
-        el.classList.remove("status-active");
-        el.classList.add("status-inactive");
-        el.textContent = "Wygasła";
-
-        // Ukryj przycisk pobierania ZIP-a, jeśli istnieje
-        const row = el.closest("tr");
-        if (row) {
-          const downloadBtn = row.querySelector(".download-btn");
-          if (downloadBtn) downloadBtn.remove();
-        }
-      }
-    });
-  }
-
-  setInterval(updateCountdowns, 1000);
-</script>
+  <script src="{{ url_for('static', filename='js/expiration_countdown.js') }}"></script>
 {% endblock %}
