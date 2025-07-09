@@ -555,28 +555,6 @@ body.hero-bg::-webkit-scrollbar {
 /* ========================
    PANEL STATYSTYK MODELI (1-kolumnowy)
 ======================== */
-.comparison-panel {
-  max-width: 900px;
-  margin: 10em auto 60px auto;
-  background-color: #1e1e2f;
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  color: #eee;
-  text-align: center;
-}
-
-.comparison-panel h2 {
-  font-size: 2rem;
-  margin-bottom: 0.8rem;
-}
-
-.comparison-panel p {
-  font-size: 1rem;
-  color: #ccc;
-  margin-bottom: 3rem;
-}
-
 .comparison-form {
   display: flex;
   flex-direction: column;
@@ -606,7 +584,7 @@ body.hero-bg::-webkit-scrollbar {
 
 .model-card h3 {
   font-size: 1.4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.6rem;
   text-align: center;
 }
 

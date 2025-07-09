@@ -15,7 +15,7 @@ from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSele
 from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
 
-DEFAULT_MODEL_PATH = "models/resnet50_feature_ext_ep40_bs16_augFalse/resnet50_feature_ext_ep40_bs16_augFalse.h5"
+DEFAULT_MODEL_PATH = "models/efficientnetb0_feature_ext_ep40_bs16_augFalse/efficientnetb0_feature_ext_ep40_bs16_augFalse.keras"
 
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -193,6 +193,13 @@ def generate_zip(token):
         job.completed = True
         db.session.commit()
         print("Status zapisany w bazie danych")
+
+        try:
+            if os.path.exists(job.result_folder):
+                shutil.rmtree(job.result_folder)
+                print(f"Folder tymczasowy usunięty: {job.result_folder}")
+        except Exception as e:
+            print(f"Błąd przy usuwaniu folderu tymczasowego: {e}")
 
     except Exception as e:
         print("Błąd przy generowaniu ZIP-a:", e)
