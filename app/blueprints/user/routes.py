@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request, send_file,
 from flask_login import login_required, current_user
 from app.models import Classification
 import os, json, shutil, math
-from app.utils.classifier import classify_zip
+
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 from app import db
@@ -12,28 +12,9 @@ import tempfile
 from . import user
 from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm
 
+from app.utils.classifier import classify_zip
+from app.utils.expiration import expire_user_classifications_after_login
 
-def expire_user_classifications_after_login(user):
-    from app.models import Classification
-    jobs = Classification.query.filter_by(user_id=user.uid, is_expired=False).all()
-    expired = []
-
-    for job in jobs:
-        if job.time_left is None:
-            job.is_expired = True
-            expired.append(job)
-
-            # usuń ZIP jeśli istnieje
-            try:
-                zip_path = os.path.join(current_app.root_path, "..", "instance", "downloads", f"{job.download_token}.zip")
-                if os.path.exists(zip_path):
-                    os.remove(zip_path)
-                    print(f"Usunięto ZIP: {zip_path}")
-            except Exception as e:
-                print(f"Błąd przy usuwaniu ZIP-a ID={job.id}: {e}")
-
-    if expired:
-        db.session.commit()
 
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required

@@ -18,7 +18,6 @@
       </div>
     </form>
 
-    <!-- Spinner -->
     <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 2em; margin-bottom: 2em;">
       <i class="fas fa-spinner fa-spin" style="font-size: 2em; color: #7f5af0;"></i>
       <p style="margin-top: 2em;">Trwa klasyfikacja zdjęć...</p>
@@ -47,49 +46,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-  const dropZone = document.getElementById("drop-zone");
-  const fileInput = document.getElementById("zip_file");
-  const fileNameDisplay = document.getElementById("file-name");
-
-  const updateFileName = file => {
-    fileNameDisplay.textContent = file.name;
-  }
-
-  ["dragenter", "dragover"].forEach(evt =>
-    dropZone?.addEventListener(evt, e => {
-      e.preventDefault();
-      dropZone.classList.add("dragover");
-    })
-  );
-
-  ["dragleave", "drop"].forEach(evt =>
-    dropZone?.addEventListener(evt, e => {
-      e.preventDefault();
-      dropZone.classList.remove("dragover");
-    })
-  );
-
-  dropZone?.addEventListener("drop", e => {
-    const files = e.dataTransfer.files;
-    if (files.length > 0 && files[0].name.endsWith(".zip")) {
-      fileInput.files = files;
-      updateFileName(files[0]);
-    } else {
-      alert("Dozwolone są tylko pliki ZIP.");
-    }
-  });
-
-  fileInput?.addEventListener("change", () => {
-    if (fileInput.files.length > 0) {
-      updateFileName(fileInput.files[0]);
-    }
-  });
-
-  // spinner + kursor
-  document.getElementById("classifyForm")?.addEventListener("submit", function () {
-    document.getElementById("loadingSpinner").style.display = "block";
-    document.body.style.cursor = "progress";
-  });
-</script>
-{% endblock scripts %}
+  <script src="{{ url_for('static', filename='js/upload_dragdrop_handler.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/classify_spinner.js') }}"></script>
+{% endblock %}

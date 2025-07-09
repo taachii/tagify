@@ -29,16 +29,5 @@
 
 {% block scripts %}
   <script src="{{ url_for('static', filename='js/classification_preview.js') }}"></script>
-  <script>
-    document.getElementById("generateZipForm")?.addEventListener("submit", function () {
-      document.getElementById("generatingSpinner").style.display = "block";
-      document.body.style.cursor = "progress";
-      const btn = document.querySelector('button[type="submit"]');
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "Generowanie ZIP-a...";
-      }
-    });
-  </script>
-
+  <script src="{{ url_for('static', filename='js/generate_zip_spinner.js') }}"></script>
 {% endblock %}
