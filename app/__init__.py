@@ -37,4 +37,7 @@ def create_app():
     from app.blueprints.admin import admin as admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
+    from app.blueprints.researcher import researcher as researcher_blueprint
+    app.register_blueprint(researcher_blueprint, url_prefix='/researcher')
+
     return app

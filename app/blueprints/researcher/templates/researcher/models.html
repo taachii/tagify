@@ -1,0 +1,53 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Tagify – Statystyki modeli{% endblock %}
+
+{% block content %}
+<div class="comparison-panel">
+  <h2>Statystyki modeli</h2>
+  <p>Wybierz model z listy, aby zobaczyć szczegóły treningu i wykresy.</p>
+
+  <form method="POST" class="comparison-form">
+    <div class="form-group">
+      <label for="model" class="model-selection-label">Model:</label>
+      <select name="model" class="form-select" required>
+        <option value="">-- wybierz model --</option>
+        {% for label, path in models %}
+          <option value="{{ path }}" {% if path == selected_model1 %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="compare-button-wrapper">
+      <button type="submit" class="btn">Pokaż statystyki</button>
+    </div>
+  </form>
+
+  {% if model_info %}
+  <div class="model-card" style="margin-top: 3rem;">
+    <h3>{{ model_info.name }}</h3>
+    <ul>
+      <li><strong>Architektura:</strong> {{ model_info.config.model_name }}</li>
+      <li><strong>Tryb:</strong> {{ model_info.config.mode }}</li>
+      <li><strong>Augmentacja:</strong> {{ model_info.config.use_aug }}</li>
+      <li><strong>Liczba epok:</strong> {{ model_info.config.epochs }}</li>
+      <li><strong>Early stopping:</strong> {{ model_info.config.early_stopping }}</li>
+      <li><strong>Faktyczna liczba epok:</strong> {{ model_info.config.actual_epochs }}</li>
+      <li><strong>Batch size:</strong> {{ model_info.config.batch_size }}</li>
+      <li><strong>Liczba klas:</strong> {{ model_info.config.class_count }}</li>
+      <li><strong>Dokładność walidacji:</strong> {{ (model_info.val_accuracy * 100) | round(2) }}%</li>
+      <li><strong>Śr. czas epoki:</strong> {{ model_info.avg_epoch_time_sec }} s</li>
+      <li><strong>Czas treningu:</strong> {{ model_info.training_time_min }} min</li>
+    </ul>
+
+    <div style="margin-top: 2rem;">
+      <h4>📈 Dokładność (Accuracy)</h4>
+      <img src="{{ model_info.plots.accuracy }}" alt="Accuracy plot">
+    </div>
+
+    <div style="margin-top: 2rem;">
+      <h4>📉 Strata (Loss)</h4>
+      <img src="{{ model_info.plots.loss }}" alt="Loss plot">
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

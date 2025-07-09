@@ -528,6 +528,90 @@ body.hero-bg::-webkit-scrollbar {
   box-shadow: 0 0 4px #823ce3;
 }
 
+/* ========================
+   PANEL STATYSTYK MODELI (1-kolumnowy)
+======================== */
+.comparison-panel {
+  max-width: 900px;
+  margin: 10em auto 60px auto;
+  background-color: #1e1e2f;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  color: #eee;
+  text-align: center;
+}
+
+.comparison-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.comparison-panel p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 3rem;
+}
+
+.comparison-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.model-selection-label {
+  font-weight: bold;
+  color: #ccc;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.compare-button-wrapper {
+  margin-top: 0.5rem;
+}
+
+.model-card {
+  background-color: #2a2a3a;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: left;
+  color: #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.model-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.model-card ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.model-card ul li {
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+}
+
+.model-card h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.3rem;
+}
+
+.model-card img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
 
 /* ========================
    UPLOAD BOX

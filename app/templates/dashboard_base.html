@@ -27,6 +27,9 @@
       {% if current_user.is_admin() %}
         <a href="{{ url_for('admin.dashboard') }}">Zarządzaj</a>
       {% endif %}
+      {% if current_user.is_researcher() %}
+        <a href="{{ url_for('researcher.model_comparison') }}">Modele</a>
+      {% endif %}
       <a href="{{ url_for('user.dashboard') }}">Klasyfikacja</a>
       <a href="{{ url_for('user.classifications') }}">Historia klasyfikacji</a>
       <a href="{{ url_for('user.account_settings') }}">Ustawienia</a>
