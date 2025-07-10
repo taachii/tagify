@@ -31,16 +31,20 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user)
-            flash(f'Zalogowano jako {user.username} ({user.role.value})', 'success')
+        if user:
+            if not user.is_active:
+                flash('Twoje konto jest dezaktywowane. Skontaktuj się z administratorem.', 'danger')
+                return redirect(url_for('auth.login'))
+            if user.check_password(form.password.data):
+                login_user(user)
+                flash(f'Zalogowano jako {user.username} ({user.role.value})', 'success')
 
-            if user.is_admin():
-                return redirect(url_for('admin.dashboard'))
-            elif user.is_researcher():
-                return redirect(url_for('user.dashboard'))
-            else:
-                return redirect(url_for('user.dashboard'))
+                if user.is_admin():
+                    return redirect(url_for('admin.dashboard'))
+                elif user.is_researcher():
+                    return redirect(url_for('user.dashboard'))
+                else:
+                    return redirect(url_for('user.dashboard'))
 
         flash('Nieprawidłowy login lub hasło.', 'danger')
     return render_template('auth/login.html', form=form)
