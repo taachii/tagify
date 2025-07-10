@@ -18,12 +18,23 @@ from app.utils.expiration import expire_user_classifications_after_login
 
 DEFAULT_MODEL_PATH = "models/efficientnetb0_feature_ext_ep40_bs16_augFalse/efficientnetb0_feature_ext_ep40_bs16_augFalse.keras"
 
+CLASS_NAME_MAP = {
+    "animals": "zwierzęta",
+    "buildings": "budynki",
+    "food": "jedzenie",
+    "landscape": "krajobraz",
+    "people": "ludzie",
+    "plants": "rośliny",
+    "vehicles": "pojazdy",
+    "other": "inne"
+}
+
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     expire_user_classifications_after_login(current_user)
 
-    MAX_ZIP_SIZE_MB = 20
+    MAX_ZIP_SIZE_MB = 50
     MAX_ZIP_SIZE_BYTES = MAX_ZIP_SIZE_MB * 1024 * 1024
 
     upload_form = ZipUploadForm()
@@ -296,7 +307,7 @@ def download_zip(token):
             if os.path.exists(zip_path):
                 os.remove(zip_path)
         except Exception as e:
-            print(f"❌ Błąd przy czyszczeniu wygasłych danych: {e}")
+            print(f"Błąd przy czyszczeniu wygasłych danych: {e}")
 
         flash("Ten plik wygasł i został usunięty.", "warning")
         return redirect(url_for('user.classifications'))

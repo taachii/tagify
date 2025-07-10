@@ -32,7 +32,7 @@ function renderPreview(items) {
         </p>
         <label for="corrections_${index}">Popraw klasę:</label>
         <select name="corrections[${item.filename}]" id="corrections_${index}" data-filename="${item.filename}">
-          ${["animals", "buildings", "food", "landscape", "people", "plants", "vehicles"].map(cls => `
+          ${["animals", "buildings", "food", "landscape", "people", "plants", "vehicles", "other"].map(cls => `
             <option value="${cls}" ${cls === selectedValue ? "selected" : ""}>${cls}</option>
           `).join("")}
         </select>
@@ -50,8 +50,8 @@ function renderPreview(items) {
 }
 
 function getConfidenceLevel(conf) {
-  if (conf < 0.4) return "low";
-  if (conf < 0.7) return "mid";
+  if (conf < 0.50) return "low";
+  if (conf < 0.75) return "mid";
   return "high";
 }
 
@@ -89,14 +89,4 @@ document.getElementById("generateZipForm")?.addEventListener("submit", function 
     hiddenInput.value = value;
     form.appendChild(hiddenInput);
   });
-
-  // Spinner i blokada przycisku
-  document.getElementById("generatingSpinner").style.display = "block";
-  document.body.style.cursor = "progress";
-
-  const btn = form.querySelector('button[type="submit"]');
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = "Generowanie ZIP-a...";
-  }
 });
