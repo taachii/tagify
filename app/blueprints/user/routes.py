@@ -8,6 +8,7 @@ from uuid import uuid4
 from app import db
 from datetime import datetime, timedelta
 import tempfile
+import zipfile
 
 from . import user
 from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm
@@ -22,6 +23,9 @@ DEFAULT_MODEL_PATH = "models/efficientnetb0_feature_ext_ep40_bs16_augFalse/effic
 def dashboard():
     expire_user_classifications_after_login(current_user)
 
+    MAX_ZIP_SIZE_MB = 20
+    MAX_ZIP_SIZE_BYTES = MAX_ZIP_SIZE_MB * 1024 * 1024
+
     upload_form = ZipUploadForm()
     model_form = None
     uploaded_filename = request.args.get("uploaded")
@@ -33,6 +37,17 @@ def dashboard():
     if upload_form.validate_on_submit():
         zip_data = upload_form.zip_file.data
         filename = secure_filename(zip_data.filename)
+
+        # Sprawdzenie rozmiaru ZIP-a
+        zip_data.seek(0, os.SEEK_END)
+        file_size = zip_data.tell()
+        zip_data.seek(0)
+
+        if file_size > MAX_ZIP_SIZE_BYTES:
+            flash(f"Przesłany plik ZIP przekracza limit {MAX_ZIP_SIZE_MB}MB.", "warning")
+            return redirect(url_for('user.dashboard'))
+
+        
         upload_path = os.path.join('instance/uploads', filename)
         os.makedirs(os.path.dirname(upload_path), exist_ok=True)
         zip_data.save(upload_path)
@@ -52,26 +67,55 @@ def dashboard():
 @user.route('/classify', methods=['POST'])
 @login_required
 def classify():
+    ALLOWED_IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'}
     filename = request.args.get("filename")
     zip_path = os.path.join('instance/uploads', filename)
 
     model_path = request.form.get("model_path", "") or DEFAULT_MODEL_PATH
 
     if not os.path.exists(model_path):
-        flash("Wybrany model nie istnieje.", "danger")
+        flash("Wybrany model nie istnieje.", "warning")
         return redirect(url_for('user.dashboard'))
 
-    # Klasyfikacja zdjęć z ZIP-a
+    # Sprawdzenie czy plik istnieje i jest ZIP-em
+    if not os.path.exists(zip_path) or not zipfile.is_zipfile(zip_path):
+        flash("Przesłany plik nie jest prawidłowym archiwum ZIP.", "warning")
+        return redirect(url_for('user.dashboard'))
+
+    # Walidacja zawartości ZIP-a: tylko obrazy
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        bad_files = []
+        image_count = 0
+
+        for name in zip_ref.namelist():
+            if name.endswith('/') or name.startswith('__MACOSX'):  # pomiń foldery i systemowe pliki
+                continue
+            ext = os.path.splitext(name)[1].lower()
+            if ext not in ALLOWED_IMAGE_EXTENSIONS:
+                bad_files.append(name)
+            else:
+                image_count += 1
+
+        if not image_count:
+            flash("Archiwum ZIP nie zawiera żadnych zdjęć.", "warning")
+            return redirect(url_for('user.dashboard'))
+
+        if bad_files:
+            preview = ', '.join(bad_files[:3]) + ('...' if len(bad_files) > 3 else '')
+            flash(f"ZIP zawiera nieobsługiwane pliki: {preview}", "warning")
+            return redirect(url_for('user.dashboard'))
+
+    # Klasyfikacja zdjęć
     results, session_id = classify_zip(zip_path, model_path)
 
-    # Usuń przesłany plik ZIP po zakończonej klasyfikacji
+    # Usuń przesłany ZIP po klasyfikacji
     try:
         if os.path.exists(zip_path):
             os.remove(zip_path)
     except Exception as e:
         print(f"Błąd przy usuwaniu ZIP-a: {e}")
 
-    # Zapisz klasyfikację w bazie
+    # Zapisz klasyfikację do bazy
     classification = Classification(
         user_id=current_user.uid,
         model_name=os.path.basename(model_path),
@@ -131,7 +175,7 @@ def classification_preview_data():
 @user.route('/generate_zip/<token>', methods=['POST'])
 @login_required
 def generate_zip(token):
-    print(f"🔁 [START] Generowanie ZIP-a dla tokenu: {token}")
+    print(f"[START] Generowanie ZIP-a dla tokenu: {token}")
     job = Classification.query.filter_by(download_token=token).first_or_404()
 
     if job.user_id != current_user.uid:

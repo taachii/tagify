@@ -13,22 +13,30 @@
   {% block background %}{% endblock %}
   {% block navbar %}{% endblock %}
 
-  <!-- Toast flash messages -->
+  {# ======================== TOASTY (success / info) ======================== #}
   <div class="toast-container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
         {% if category in ['success', 'info'] %}
-        <div class="toast alert {{ category }}">
-          {{ message }}
-        </div>
+          <div class="toast {{ category }}">{{ message }}</div>
         {% endif %}
       {% endfor %}
     {% endwith %}
   </div>
 
+  {# ======================== ALERTY (danger / warning) ======================== #}
+  
+
   <div class="wrapper">
     <main>
       {% block content %}{% endblock %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          {% if category in ['danger', 'warning'] %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endwith %}
     </main>
 
     <footer class="footer">
@@ -36,7 +44,7 @@
     </footer>
   </div>
 
-    <!-- Globalny modal potwierdzenia -->
+  {# ======================== GLOBALNY MODAL POTWIERDZENIA ======================== #}
   <div id="confirmModal" class="custom-modal hidden">
     <div class="modal-content">
       <p id="confirmText">Czy na pewno chcesz to zrobić?</p>
@@ -47,9 +55,7 @@
     </div>
   </div>
 
-  {% block scripts %}
-  
-  {% endblock %}
+  {% block scripts %}{% endblock %}
   <script src="{{ url_for('static', filename='js/confirm_modal.js') }}"></script>
 </body>
 </html>

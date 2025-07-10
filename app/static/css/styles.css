@@ -884,7 +884,7 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 /* ========================
-   POP-UPY / TOAST
+   TOASTY (popup, znikające)
 ======================== */
 .toast-container {
   position: fixed;
@@ -908,9 +908,10 @@ body.hero-bg::-webkit-scrollbar {
   animation: fadeIn 0.5s forwards, fadeOut 0.5s ease-out 3s forwards;
 }
 
-.toast.success { background-color: #28a745; }
-.toast.warning { background-color: #ffc107; color: #212529; }
-.toast.danger  { background-color: #dc3545; }
+.toast.success  { background-color: #28a745; }
+.toast.info     { background-color: #17a2b8; }
+.toast.warning  { background-color: #ffc107; color: #212529; }
+.toast.danger   { background-color: #dc3545; }
 
 .toast-close {
   position: absolute;
@@ -923,21 +924,11 @@ body.hero-bg::-webkit-scrollbar {
   cursor: pointer;
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; transform: translateY(0); }
-  from { opacity: 0; transform: translateY(-10px); }
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; transform: translateY(-10px); }
-}
-
 /* ========================
-   ALERTY
+   ALERTY (stałe, nieznikające)
 ======================== */
-/* OGÓLNE ALERTY (np. flash messages) */
 .alert {
-  margin: 1rem auto;
+  margin: 4rem auto 0 auto;
   padding: 1rem;
   width: 90%;
   max-width: 600px;
@@ -948,9 +939,10 @@ body.hero-bg::-webkit-scrollbar {
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
-.alert.success {
-  background-color: #d4edda;
-  color: #155724;
+.alert.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
 .alert.warning {
@@ -958,27 +950,28 @@ body.hero-bg::-webkit-scrollbar {
   color: #856404;
 }
 
-.alert.danger {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* BŁĘDY PRZY POLACH FORMULARZY */
+/* ========================
+   BŁĘDY POD POLAMI FORMULARZY
+======================== */
 .form-error {
-  color: #dc3545; /* żywa, ale stonowana czerwień */
+  color: #dc3545;
   font-size: 0.85rem;
   margin-top: 0.3rem;
   text-align: left;
   padding-left: 0.2rem;
 }
 
+/* ========================
+   ANIMACJE (dla toastów)
+======================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-.form-error {
-    color: #dc3545;
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
-  text-align: left;
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
 }
 
 /* ========================

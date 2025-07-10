@@ -7,14 +7,14 @@ from .forms import EditUserForm
 
 @admin.route('/dashboard')
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def dashboard():
     users = User.query.all()
     return render_template('admin/dashboard.html', users=users)
 
 @admin.route('/dashboard/data')
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def dashboard_data():
     page = request.args.get('page', 1, type=int)
     search = request.args.get('search', '', type=str)
@@ -43,7 +43,7 @@ def dashboard_data():
 
 @admin.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
@@ -63,7 +63,7 @@ def edit_user(user_id):
 
 @admin.route('/dashboard/user/<int:user_id>/deactivate', methods=['POST'])
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def deactivate_user(user_id):
     user = User.query.get_or_404(user_id)
     user.is_active = False
@@ -72,7 +72,7 @@ def deactivate_user(user_id):
 
 @admin.route('/dashboard/user/<int:user_id>/activate', methods=['POST'])
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def activate_user(user_id):
     user = User.query.get_or_404(user_id)
     user.is_active = True
@@ -81,7 +81,7 @@ def activate_user(user_id):
 
 @admin.route('/dashboard/user/<int:user_id>/delete', methods=['POST'])
 @login_required
-@role_required('admin')
+@role_required(UserRole.ADMIN)
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)

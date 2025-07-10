@@ -13,7 +13,3 @@ def home():
         else:
             return redirect(url_for('user.dashboard'))
     return render_template('core/home.html')
-
-@core.route('/pro')
-def pro_info():
-    return render_template('core/pro.html')

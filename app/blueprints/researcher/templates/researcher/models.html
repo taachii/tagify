@@ -12,7 +12,7 @@
       <select name="model" class="form-select" required>
         <option value="">-- wybierz model --</option>
         {% for label, path in models %}
-          <option value="{{ path }}" {% if path == selected_model1 %}selected{% endif %}>{{ label }}</option>
+          <option value="{{ path }}" {% if path == selected_model %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
       </select>
     </div>

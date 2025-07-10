@@ -2,14 +2,15 @@ from flask import Blueprint, render_template, request, url_for
 from flask_login import login_required, current_user
 from app.decorators import role_required
 from app.utils.classifier import get_available_models
+from app.models import UserRole
 import json
 import os
 
-from . import researcher  # spójnie z user/routes.py
+from . import researcher
 
 @researcher.route('/models', methods=['GET', 'POST'])
 @login_required
-@role_required("researcher")
+@role_required(UserRole.RESEARCHER)
 def model_comparison():
     models = get_available_models()
     selected_model = None
@@ -62,6 +63,6 @@ def model_comparison():
     return render_template(
         "researcher/models.html",
         models=models,
-        selected_model1=selected_model,
+        selected_model=selected_model,
         model_info=model_info
     )
