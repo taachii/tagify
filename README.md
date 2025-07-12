@@ -94,7 +94,7 @@ tagify
 - SQLAlchemy
 - Flask-Login
 - TensorFlow 2.19.0
-- Przeglądarka z obsługa JavaScript
+- Przeglądarka z obsługą JavaScript
 
 ### Pełna lista wymagań znajduje się w pliku requirements.txt
 
