@@ -330,6 +330,7 @@ body.hero-bg::-webkit-scrollbar {
   border-radius: 6px;
   background-color: #2a2a3a;
   color: #eee;
+  text-align: center;
   border: 1px solid #666;
   appearance: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
