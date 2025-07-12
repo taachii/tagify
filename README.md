@@ -96,14 +96,17 @@ tagify
 - TensorFlow 2.19.0
 - Przeglądarka z obsługą JavaScript
 
-### Pełna lista wymagań znajduje się w pliku requirements.txt
+### Pełna lista wymagań znajduje się w pliku `requirements.txt`
 
 ---
 
 ## Obsługa modeli i klasyfikacji
 
-- Modele klasyfikacyjne (ResNet50, EfficientNetB0) są przechowywane w katalogu models/ (nieobecnym w repozytorium z powodu rozmiarów przekraczających limit GitHuba) - katalog ten można pobrać korzystając z tego linku: 'Tu będzie link'
-- Użytkownicy mogą przesyłać pliki ZIP ze zdjęciami do klasyfikacji. Przykładowe foldery ze zdjęciami do testów można pobrać przy użyciu tego linku: 'Tu będzie link'
+- Modele klasyfikacyjne (ResNet50, EfficientNetB0) są przechowywane w katalogu models/ (nieobecnym w repozytorium z powodu rozmiarów przekraczających limit GitHuba). Katalog ten można pobrać stąd: [Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
+- Użytkownicy mogą przesyłać pliki ZIP ze zdjęciami do klasyfikacji
+- Przykładowe foldery ze zdjęciami do testów można pobrać tutaj:
+  - [Zbiór testowy - test.zip](https://drive.google.com/file/d/1aOf9k2RgLTpbgGOtubV49oaIX_9j8kJI/view?usp=sharing)
+  - [Zbiór testowy - test_3classes.zip](https://drive.google.com/file/d/1IBPYxqoIYH8dRT2jPWJv1nRuQMJ-Mwi7/view?usp=sharing)
 - Wyniki klasyfikacji są prezentowane z wizualnym podkreśleniem pewności predykcji
 - Użytkownik może ręcznie poprawić klasyfikację dla poszczególnych zdjęć, również może wskazać klasę "others" przy zdjęciach niepasujących do żadnej z dostępnych klas
 - Po zatwierdzeniu wyników generowany jest plik ZIP z posegregowanymi zdjęciami wg poprawionych klas
