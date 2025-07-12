@@ -16,7 +16,8 @@ from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSele
 from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
 
-DEFAULT_MODEL_PATH = "models/efficientnetb0_feature_ext_ep40_bs16_augFalse/efficientnetb0_feature_ext_ep40_bs16_augFalse.keras"
+DEFAULT_MODEL_DIRECTORY = os.path.join("models", "efficientnetb0_feature_ext_ep40_bs16_augFalse_cl7")
+DEFAULT_MODEL_PATH = os.path.join(DEFAULT_MODEL_DIRECTORY, "efficientnetb0_feature_ext_ep40_bs16_augFalse_cl7.keras")
 
 CLASS_NAME_MAP = {
     "animals": "zwierzęta",
@@ -154,7 +155,7 @@ def classify():
 def classification_preview_data():
     token = request.args.get("token")
     page = int(request.args.get("page", 1))
-    per_page = 10
+    per_page = 8
 
     job = Classification.query.filter_by(download_token=token).first_or_404()
 

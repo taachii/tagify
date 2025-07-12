@@ -21,7 +21,7 @@ def get_available_models():
 
     for model_dir in MODELS_DIR.iterdir():
         if model_dir.is_dir():
-            keras_files = list(model_dir.glob("*.keras"))  # zmiana z .h5 na .keras
+            keras_files = list(model_dir.glob("*.keras"))
             if keras_files:
                 model_path = str(keras_files[0])
                 available.append((model_dir.name, model_path))
