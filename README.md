@@ -90,7 +90,7 @@ tagify
 ## Wymagania
 
 - Python 3.11 lub nowszy
-- Flask i rozszerzenia Flask-Login, Flask-Migrate, Flask-WTF
+- Flask i rozszerzenia Flask-Login, Flask-Migrate, Flask-WTForms
 - SQLAlchemy
 - Flask-Login
 - TensorFlow 2.19.0
