@@ -1,4 +1,4 @@
-![alt text](https://github.com/taachii/tagify/tree/main/app/static/img/logo.png)
+![alt text](https://github.com/taachii/tagify/tree/main/app/static/img/favicon.ico)
 # Tagify – Aplikacja do klasyfikacji zdjęć
 
 Tagify to webowa aplikacja oparta na Flasku, umożliwiająca zarządzanie zdjęciami i automatyczną klasyfikację obrazów za pomocą modeli uczenia głębokiego (ResNet50, EfficientNet).
