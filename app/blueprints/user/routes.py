@@ -12,7 +12,8 @@ import tempfile
 import zipfile
 
 from . import user
-from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm, UserPathsForm
+from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm, UserPathsForm, OpenPathForm
+from wtforms import StringField
 
 from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
@@ -175,6 +176,17 @@ def classification_preview_data():
     })
 
 
+def get_unique_filename(directory, filename):
+    base, ext = os.path.splitext(filename)
+    counter = 1
+    new_filename = filename
+
+    while os.path.exists(os.path.join(directory, new_filename)):
+        new_filename = f"{base} ({counter}){ext}"
+        counter += 1
+
+    return new_filename
+
 @user.route('/generate_zip/<token>', methods=['POST'])
 @login_required
 def generate_zip(token):
@@ -228,14 +240,15 @@ def generate_zip(token):
 
                 original_path = os.path.join(job.result_folder, r["filename"])
                 if os.path.exists(original_path):
-                    # kopiowanie do katalogu ZIP-a
+                    # ✅ Kopiowanie do struktury ZIP-a (z oryginalną nazwą)
                     shutil.copy2(original_path, os.path.join(klas_dir, r["filename"]))
 
-                    # kopiowanie do folderów lokalnych użytkownika (jeśli skonfigurowane)
+                    # ✅ Kopiowanie do folderów lokalnych użytkownika (jeśli skonfigurowane)
                     dest_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=klas).first()
                     if dest_path and os.path.isdir(dest_path.path):
                         try:
-                            shutil.copy2(original_path, os.path.join(dest_path.path, r["filename"]))
+                            dest_filename = get_unique_filename(dest_path.path, r["filename"])
+                            shutil.copy2(original_path, os.path.join(dest_path.path, dest_filename))
                             print(f"Skopiowano do lokalnej ścieżki: {dest_path.path}")
                         except Exception as e:
                             print(f"Błąd przy kopiowaniu do {dest_path.path}: {e}")
@@ -282,13 +295,17 @@ def download_ready(token):
 
     user_paths = {entry.class_label: entry.path for entry in UserPath.query.filter_by(user_id=current_user.uid).all()}
 
+    form = OpenPathForm()
+    form.class_selector.choices = [(label, f"{label} – {path}") for label, path in user_paths.items()]
+
     return render_template(
         "user/download_ready.html",
         download_token=token,
         total_images=job.total_images,
         model_name=job.model_name,
         zip_ready=zip_ready,
-         user_paths=user_paths
+        user_paths=user_paths,
+        open_path_form=form
     )
 
 
@@ -407,8 +424,6 @@ def change_password():
 @user.route('/account/paths', methods=['GET', 'POST'])
 @login_required
 def manage_paths():
-    from .forms import UserPathsForm
-    from wtforms import StringField
     form = UserPathsForm()
 
     if form.validate_on_submit():
@@ -449,11 +464,23 @@ def manage_paths():
 
     return render_template('user/manage_paths.html', form=form)
 
-@user.route('/open_path/<class_label>')
+@user.route('/open_path', methods=['POST'])
 @login_required
-def open_path(class_label):
-    user_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=class_label).first_or_404()
+def open_path():
+    class_label = request.form.get("class_selector")
+    token = request.form.get("token")
+
+    if not class_label:
+        flash("Nie wybrano klasy.", "warning")
+        return redirect(url_for('user.download_ready', token=token))
+
+    user_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=class_label).first()
+    if not user_path:
+        flash("Nie znaleziono folderu dla wybranej klasy.", "danger")
+        return redirect(url_for('user.download_ready', token=token))
+
     path = user_path.path
+
     try:
         if platform.system() == "Windows":
             subprocess.Popen(f'explorer "{path}"')
@@ -464,4 +491,5 @@ def open_path(class_label):
         flash(f"Otworzono folder: {path}", "success")
     except Exception as e:
         flash(f"Nie udało się otworzyć folderu: {e}", "danger")
-    return redirect(url_for('user.account_settings'))
+
+    return redirect(url_for('user.download_ready', token=token))

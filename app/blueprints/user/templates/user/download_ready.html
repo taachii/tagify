@@ -14,18 +14,21 @@
     </a>
   </div>
 
-  {% if user_paths %}
-  <h3>Podgląd folderów docelowych:</h3>
-  <ul class="path-preview-list">
-    {% for class_label, path in user_paths.items() %}
-      <li style="margin-bottom: 0.5em;">
-        <strong>{{ class_label }}:</strong> {{ path }}
-        <a href="{{ url_for('user.open_path', class_label=class_label) }}" class="btn btn-small btn-outline" style="margin-left: 1em;">
-          Otwórz folder
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+{% if user_paths %}
+  <div style="margin-top: 3rem;">
+    <h3 style="margin-bottom: 1rem;">Podgląd folderów docelowych:</h3>
+    <form method="POST" action="{{ url_for('user.open_path') }}">
+      {{ open_path_form.hidden_tag() }}
+
+      <div class="folder-preview-wrapper" style="display: flex; gap: 1rem; align-items: center;">
+        {{ open_path_form.class_selector(class="form-select") }}
+        <input type="hidden" name="token" value="{{ download_token }}">
+        <button type="submit" class="open-folder-btn" title="Otwórz folder">
+          <i class="fas fa-folder-open"></i>
+        </button>
+      </div>
+    </form>
+  </div>
 {% endif %}
 
   <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Powrót do historii klasyfikacji</a>

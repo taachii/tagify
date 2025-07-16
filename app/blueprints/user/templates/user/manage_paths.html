@@ -1,19 +1,54 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Tagify – Ścieżki lokalne{% endblock %}
+
 {% block content %}
 <div class="user-panel">
   <h2>Skonfiguruj ścieżki lokalne</h2>
   <p>Określ, gdzie mają trafiać zdjęcia z klasyfikacji. Zostaną tam skopiowane po zakończeniu procesu.</p>
-  <form method="POST">
+
+  <form method="POST" class="paths-form">
     {{ form.hidden_tag() }}
-    <div class="form-group">{{ form.people.label }}{{ form.people(class="form-control") }}</div>
-    <div class="form-group">{{ form.animals.label }}{{ form.animals(class="form-control") }}</div>
-    <div class="form-group">{{ form.landscape.label }}{{ form.landscape(class="form-control") }}</div>
-    <div class="form-group">{{ form.vehicles.label }}{{ form.vehicles(class="form-control") }}</div>
-    <div class="form-group">{{ form.buildings.label }}{{ form.buildings(class="form-control") }}</div>
-    <div class="form-group">{{ form.plants.label }}{{ form.plants(class="form-control") }}</div>
-    <div class="form-group">{{ form.food.label }}{{ form.food(class="form-control") }}</div>
-    <div class="form-group">{{ form.other.label }}{{ form.other(class="form-control") }}</div>
+
+    <div class="path-row">
+      <label for="{{ form.people.id }}">{{ form.people.label.text }}</label>
+      {{ form.people(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.animals.id }}">{{ form.animals.label.text }}</label>
+      {{ form.animals(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.landscape.id }}">{{ form.landscape.label.text }}</label>
+      {{ form.landscape(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.vehicles.id }}">{{ form.vehicles.label.text }}</label>
+      {{ form.vehicles(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.buildings.id }}">{{ form.buildings.label.text }}</label>
+      {{ form.buildings(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.plants.id }}">{{ form.plants.label.text }}</label>
+      {{ form.plants(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.food.id }}">{{ form.food.label.text }}</label>
+      {{ form.food(class="styled-input short") }}
+    </div>
+
+    <div class="path-row">
+      <label for="{{ form.other.id }}">{{ form.other.label.text }}</label>
+      {{ form.other(class="styled-input short") }}
+    </div>
+
     <button type="submit" class="btn">Zapisz ścieżki</button>
   </form>
 </div>

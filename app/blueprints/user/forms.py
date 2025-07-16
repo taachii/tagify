@@ -52,3 +52,7 @@ class UserPathsForm(FlaskForm):
     food = StringField('Lokalizacja dla "food"')
     other = StringField('Lokalizacja dla "other"')
     submit = SubmitField('Zapisz ścieżki')
+
+class OpenPathForm(FlaskForm):
+    class_selector = SelectField('Wybierz klasę', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Otwórz folder')
