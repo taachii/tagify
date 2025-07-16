@@ -69,3 +69,12 @@ class Classification(db.Model):
         if remaining.total_seconds() <= 0:
             return None
         return remaining
+
+class UserPath(db.Model):
+    __tablename__ = 'user_paths'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.uid'), nullable=False)
+    class_label = db.Column(db.String, nullable=False)  # np. "people", "animals"
+    path = db.Column(db.String, nullable=False)
+
+    user = db.relationship('User', backref='paths')

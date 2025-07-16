@@ -41,3 +41,14 @@ class ChangePasswordForm(FlaskForm):
         EqualTo('new_password', message='Hasła muszą być takie same')
     ])
     submit = SubmitField('Zmień hasło')
+
+class UserPathsForm(FlaskForm):
+    people = StringField('Lokalizacja dla "people"')
+    animals = StringField('Lokalizacja dla "animals"')
+    landscape = StringField('Lokalizacja dla "landscape"')
+    vehicles = StringField('Lokalizacja dla "vehicles"')
+    buildings = StringField('Lokalizacja dla "buildings"')
+    plants = StringField('Lokalizacja dla "plants"')
+    food = StringField('Lokalizacja dla "food"')
+    other = StringField('Lokalizacja dla "other"')
+    submit = SubmitField('Zapisz ścieżki')

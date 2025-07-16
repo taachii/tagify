@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify
 from flask_login import login_required, current_user
-from app.models import Classification
+from app.models import Classification, UserPath
 import os, json, shutil, math
+import subprocess, platform
 
 from werkzeug.utils import secure_filename
 from uuid import uuid4
@@ -11,7 +12,7 @@ import tempfile
 import zipfile
 
 from . import user
-from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm
+from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm, UserPathsForm
 
 from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
@@ -19,16 +20,6 @@ from app.utils.expiration import expire_user_classifications_after_login
 DEFAULT_MODEL_DIRECTORY = os.path.join("models", "efficientnetb0_feature_ext_ep40_bs16_augFalse_cl7")
 DEFAULT_MODEL_PATH = os.path.join(DEFAULT_MODEL_DIRECTORY, "efficientnetb0_feature_ext_ep40_bs16_augFalse_cl7.keras")
 
-CLASS_NAME_MAP = {
-    "animals": "zwierzęta",
-    "buildings": "budynki",
-    "food": "jedzenie",
-    "landscape": "krajobraz",
-    "people": "ludzie",
-    "plants": "rośliny",
-    "vehicles": "pojazdy",
-    "other": "inne"
-}
 
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -228,6 +219,7 @@ def generate_zip(token):
         print("results.json zaktualizowany")
 
         print("Przygotowywanie struktury katalogów klas...")
+        from app.models import UserPath
         with tempfile.TemporaryDirectory() as temp_dir:
             for r in results:
                 klas = r["predicted_label"]
@@ -236,7 +228,17 @@ def generate_zip(token):
 
                 original_path = os.path.join(job.result_folder, r["filename"])
                 if os.path.exists(original_path):
+                    # kopiowanie do katalogu ZIP-a
                     shutil.copy2(original_path, os.path.join(klas_dir, r["filename"]))
+
+                    # kopiowanie do folderów lokalnych użytkownika (jeśli skonfigurowane)
+                    dest_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=klas).first()
+                    if dest_path and os.path.isdir(dest_path.path):
+                        try:
+                            shutil.copy2(original_path, os.path.join(dest_path.path, r["filename"]))
+                            print(f"Skopiowano do lokalnej ścieżki: {dest_path.path}")
+                        except Exception as e:
+                            print(f"Błąd przy kopiowaniu do {dest_path.path}: {e}")
 
             downloads_dir = os.path.join(current_app.root_path, "..", "instance", "downloads")
             os.makedirs(downloads_dir, exist_ok=True)
@@ -278,12 +280,15 @@ def download_ready(token):
     zip_path = os.path.join(current_app.root_path, "..", "instance", "downloads", f"{token}.zip")
     zip_ready = os.path.exists(zip_path)
 
+    user_paths = {entry.class_label: entry.path for entry in UserPath.query.filter_by(user_id=current_user.uid).all()}
+
     return render_template(
         "user/download_ready.html",
         download_token=token,
         total_images=job.total_images,
         model_name=job.model_name,
-        zip_ready=zip_ready
+        zip_ready=zip_ready,
+         user_paths=user_paths
     )
 
 
@@ -397,3 +402,66 @@ def change_password():
             flash("Hasło zostało zmienione", "success")
             return redirect(url_for('user.account_settings'))
     return render_template('user/change_password.html', form=form)
+
+
+@user.route('/account/paths', methods=['GET', 'POST'])
+@login_required
+def manage_paths():
+    from .forms import UserPathsForm
+    from wtforms import StringField
+    form = UserPathsForm()
+
+    if form.validate_on_submit():
+        errors = []
+
+        for name, field in form._fields.items():
+            if name in ("csrf_token", "submit"):
+                continue
+            if not isinstance(field, StringField):
+                continue  # Pomijamy np. submit, csrf_token
+
+            raw_path = field.data.strip()
+            if raw_path:
+                normalized_path = os.path.normpath(raw_path)
+            
+                if not os.path.isdir(normalized_path):
+                    errors.append(f"Ścieżka dla pola '{field.label.text}' jest nieprawidłowa lub nie istnieje.")
+                    continue
+
+                path_entry = UserPath.query.filter_by(user_id=current_user.uid, class_label=name).first()
+                if path_entry:
+                    path_entry.path = normalized_path
+                else:
+                    db.session.add(UserPath(user_id=current_user.uid, class_label=name, path=normalized_path))
+
+        if errors:
+            for e in errors:
+                flash(e, "danger")
+        else:
+            db.session.commit()
+            flash("Ścieżki zostały zapisane.", "success")
+            return redirect(url_for('user.account_settings'))
+
+    # Pre-fill existing paths
+    for entry in UserPath.query.filter_by(user_id=current_user.uid).all():
+        if hasattr(form, entry.class_label):
+            getattr(form, entry.class_label).data = entry.path
+
+    return render_template('user/manage_paths.html', form=form)
+
+@user.route('/open_path/<class_label>')
+@login_required
+def open_path(class_label):
+    user_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=class_label).first_or_404()
+    path = user_path.path
+    try:
+        if platform.system() == "Windows":
+            subprocess.Popen(f'explorer "{path}"')
+        elif platform.system() == "Linux":
+            subprocess.Popen(["xdg-open", path])
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", path])
+        flash(f"Otworzono folder: {path}", "success")
+    except Exception as e:
+        flash(f"Nie udało się otworzyć folderu: {e}", "danger")
+    return redirect(url_for('user.account_settings'))

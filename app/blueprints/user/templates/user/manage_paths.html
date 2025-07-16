@@ -1,0 +1,20 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Tagify – Ścieżki lokalne{% endblock %}
+{% block content %}
+<div class="user-panel">
+  <h2>Skonfiguruj ścieżki lokalne</h2>
+  <p>Określ, gdzie mają trafiać zdjęcia z klasyfikacji. Zostaną tam skopiowane po zakończeniu procesu.</p>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">{{ form.people.label }}{{ form.people(class="form-control") }}</div>
+    <div class="form-group">{{ form.animals.label }}{{ form.animals(class="form-control") }}</div>
+    <div class="form-group">{{ form.landscape.label }}{{ form.landscape(class="form-control") }}</div>
+    <div class="form-group">{{ form.vehicles.label }}{{ form.vehicles(class="form-control") }}</div>
+    <div class="form-group">{{ form.buildings.label }}{{ form.buildings(class="form-control") }}</div>
+    <div class="form-group">{{ form.plants.label }}{{ form.plants(class="form-control") }}</div>
+    <div class="form-group">{{ form.food.label }}{{ form.food(class="form-control") }}</div>
+    <div class="form-group">{{ form.other.label }}{{ form.other(class="form-control") }}</div>
+    <button type="submit" class="btn">Zapisz ścieżki</button>
+  </form>
+</div>
+{% endblock %}

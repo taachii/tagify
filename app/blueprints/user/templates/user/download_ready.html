@@ -14,6 +14,20 @@
     </a>
   </div>
 
+  {% if user_paths %}
+  <h3>Podgląd folderów docelowych:</h3>
+  <ul class="path-preview-list">
+    {% for class_label, path in user_paths.items() %}
+      <li style="margin-bottom: 0.5em;">
+        <strong>{{ class_label }}:</strong> {{ path }}
+        <a href="{{ url_for('user.open_path', class_label=class_label) }}" class="btn btn-small btn-outline" style="margin-left: 1em;">
+          Otwórz folder
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
   <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Powrót do historii klasyfikacji</a>
 </div>
 {% endblock %}
