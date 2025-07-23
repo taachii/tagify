@@ -1,6 +1,4 @@
-/* ========================
-   RESET I BAZA
-======================== */
+/* RESET & BASE */
 * {
   margin: 0;
   padding: 0;
@@ -17,6 +15,12 @@ body.hero-bg {
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+body.hero-bg::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 html, body {
@@ -46,9 +50,7 @@ html, body {
 #bg1 { z-index: 1; }
 #bg2 { z-index: 2; }
 
-/* ========================
-   TŁO DLA STRON
-======================== */
+/* PAGE BACKGROUND */
 .auth-body {
   background: linear-gradient(135deg, #1f1c2c, #928dab);
   color: #eee;
@@ -64,9 +66,7 @@ main {
   flex: 1;
 }
 
-/* ========================
-   NAVBAR
-======================== */
+/* NAVBAR */
 .navbar {
   background-color: #1e1e2f;
   padding: 1rem 0;
@@ -86,27 +86,15 @@ main {
   position: relative;
 }
 
-.nav-left,
-.nav-center,
-.nav-right {
+.nav-left, .nav-center, .nav-right {
   flex: 1;
   display: flex;
   align-items: center;
 }
 
-.nav-left {
-  justify-content: flex-start;
-}
-
-.nav-center {
-  justify-content: center;
-  text-align: center;
-}
-
-.nav-right {
-  justify-content: flex-end;
-  gap: 1rem;
-}
+.nav-left { justify-content: flex-start; }
+.nav-center { justify-content: center; text-align: center; }
+.nav-right { justify-content: flex-end; gap: 1rem; }
 
 .brand {
   display: flex;
@@ -147,28 +135,17 @@ main {
   transition: width 0.3s ease;
 }
 
-.nav-links a:hover::after {
-  width: 70%;
-}
-
-.nav-links a:hover {
-  color: #fff;
-}
-
-.nav-links a.active {
-  color: #ff6ac1;
-  font-weight: 600;
-}
+.nav-links a:hover::after { width: 70%; }
+.nav-links a:hover { color: #fff; }
+.nav-links a.active { color: #ff6ac1; font-weight: 600; }
 
 .username {
-  color: #ffffff;
+  color: #fff;
   font-weight: bold;
   font-size: 1.2rem;
 }
 
-/* ========================
-   FOOTER
-======================== */
+/* FOOTER */
 .footer {
   text-align: center;
   padding: 1rem;
@@ -184,23 +161,9 @@ main {
   transition: color 0.2s ease;
 }
 
-.footer a:hover {
-  color: #ffffff;
-}
+.footer a:hover { color: #fff; }
 
-/* ========================
-   HERO SEKCJA
-======================== */
-
-body.hero-bg {
-  scrollbar-width: none;          /* Firefox */
-  -ms-overflow-style: none;       /* IE/Edge */
-}
-
-body.hero-bg::-webkit-scrollbar {
-  display: none;                  /* Chrome, Safari, Opera */
-}
-
+/* HERO SECTION */
 .hero {
   display: flex;
   align-items: center;
@@ -209,7 +172,7 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 .hero-content {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border-radius: 20px;
   padding: 3rem 2rem;
   max-width: 600px;
@@ -217,9 +180,9 @@ body.hero-bg::-webkit-scrollbar {
   text-align: center;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  color: #fff;
 }
 
 .hero-title {
@@ -240,13 +203,11 @@ body.hero-bg::-webkit-scrollbar {
   flex-wrap: wrap;
 }
 
-/* ========================
-   BUTTONY
-======================== */
+/* BUTTONS */
 .btn {
   padding: 0.6rem 1rem;
   background: linear-gradient(135deg, #7f5af0, #ff6ac1);
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-weight: bold;
@@ -261,25 +222,23 @@ body.hero-bg::-webkit-scrollbar {
 
 .btn-outline {
   background: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid #fff;
+  color: #fff;
 }
 
 .btn-outline:hover {
-  background: white;
+  background: #fff;
   color: #1e1e2f;
 }
 
-/* ========================
-   FORMULARZE (logowanie / rejestracja)
-======================== */
+/* FORMS */
 .auth-container {
   max-width: 500px;
   margin: 160px auto 60px auto;
   background-color: #1e1e2f;
   padding: 2.5rem;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   color: #eee;
 }
 
@@ -319,9 +278,7 @@ body.hero-bg::-webkit-scrollbar {
   transition: color 0.2s ease;
 }
 
-.form-link a:hover {
-  color: #ffffff;
-}
+.form-link a:hover { color: #fff; }
 
 .form-select {
   width: 100%;
@@ -333,7 +290,7 @@ body.hero-bg::-webkit-scrollbar {
   text-align: center;
   border: 1px solid #666;
   appearance: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
 .form-select:focus {
@@ -342,9 +299,7 @@ body.hero-bg::-webkit-scrollbar {
   background-color: #3a3a4a;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-}
+.form-group { margin-bottom: 1.5rem; }
 
 .form-input-wrapper {
   position: relative;
@@ -373,9 +328,7 @@ body.hero-bg::-webkit-scrollbar {
   border: 1px solid #666;
 }
 
-.auth-container .form-input::placeholder {
-  color: #aaa;
-}
+.auth-container .form-input::placeholder { color: #aaa; }
 
 .auth-container .form-input:focus {
   border-color: #9b5df0;
@@ -383,27 +336,20 @@ body.hero-bg::-webkit-scrollbar {
   background-color: #3a3a4a;
 }
 
-/* ========================
-   PANEL UŻYTKOWNIKA / ADMINA
-======================== */
+/* USER/ADMIN PANEL */
 .user-panel, .admin-panel {
   max-width: 75%;
   margin: 10em auto 60px auto;
   background-color: #1e1e2f;
-  padding: 3rem 3rem;
+  padding: 3rem;
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   color: #eee;
   text-align: center;
 }
 
-.wide-panel {
-  width: 75% !important;
-}
-
-.user-panel {
-  width: 50%;
-}
+.wide-panel { width: 75% !important; }
+.user-panel { width: 50%; }
 
 .user-panel h2, .admin-title {
   font-size: 1.8rem;
@@ -417,25 +363,11 @@ body.hero-bg::-webkit-scrollbar {
   color: #ccc;
 }
 
-.preview-item p {
-  margin-bottom: 0.2rem;
-}
-
-.preview-item p:first-of-type {
-  margin-top: 0.5rem;
-}
-
-.preview-item p.confidence-low {
-  color: #e74c3c;
-}
-
-.preview-item p.confidence-mid {
-  color: #f39c12;
-}
-
-.preview-item p.confidence-high {
-  color: #2ecc71;
-}
+.preview-item p { margin-bottom: 0.2rem; }
+.preview-item p:first-of-type { margin-top: 0.5rem; }
+.preview-item p.confidence-low { color: #e74c3c; }
+.preview-item p.confidence-mid { color: #f39c12; }
+.preview-item p.confidence-high { color: #2ecc71; }
 
 .folder-preview-wrapper {
   display: flex;
@@ -446,11 +378,9 @@ body.hero-bg::-webkit-scrollbar {
   flex-wrap: wrap;
 }
 
-#class_selector {
-  width: 50% !important;
-}
+#class_selector { width: 50% !important; }
 
-/* Stylizacja formularza ścieżek lokalnych */
+/* LOCAL PATHS FORM */
 .paths-form {
   margin-top: 2rem;
   max-width: 600px;
@@ -460,56 +390,6 @@ body.hero-bg::-webkit-scrollbar {
   flex-direction: column;
   gap: 1rem;
   padding: 1rem 0;
-}
-
-.path-row {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.path-row label {
-  flex: 0 0 45%;
-  text-align: right;
-  font-weight: 600;
-  color: #ccc;
-  font-size: 0.95rem;
-}
-
-.styled-input.short {
-  flex: 1 1 50%;
-  padding: 0.5rem 0.9rem;
-  border: 1px solid #444;
-  border-radius: 8px;
-  background-color: #313131;
-  color: #fff;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease;
-  max-width: 300px;
-}
-
-.styled-input.short:focus {
-  border-color: #a25eff;
-  outline: none;
-}
-
-@media (max-width: 768px) {
-  .path-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .path-row label {
-    text-align: left;
-    width: 100%;
-  }
-
-  .styled-input.short {
-    width: 100%;
-    max-width: 100%;
-  }
 }
 
 .path-row {
@@ -525,28 +405,41 @@ body.hero-bg::-webkit-scrollbar {
   flex: 1 1 40%;
   font-weight: 600;
   color: #ddd;
+  font-size: 0.95rem;
+  text-align: right;
 }
 
 .styled-input.short {
   flex: 1 1 55%;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #313131;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
   max-width: 400px;
 }
 
+.styled-input.short:focus {
+  border-color: #a25eff;
+  outline: none;
+}
+
 .open-folder-btn {
-  padding: 0.50rem 0.9rem;
+  padding: 0.5rem 0.9rem;
   font-size: 1.1rem;
   border: 2px solid #ff6ac1;
   border-radius: 8px;
   background: transparent;
   color: #ff6ac1;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
 }
 
-.open-folder-btn:hover {
-  transform: scale(1.05);
-}
+.open-folder-btn:hover { transform: scale(1.05); }
 
+/* ADMIN HEADER */
 .admin-header {
   display: flex;
   justify-content: space-between;
@@ -562,77 +455,45 @@ body.hero-bg::-webkit-scrollbar {
   text-align: left;
 }
 
-.admin-header .search-input {
-  margin-bottom: 0;
-}
+.admin-header .search-input { margin-bottom: 0; }
 
-.custom-modal {
+/* MODALS */
+.custom-modal, #confusionMatrixModal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
 }
 
-.custom-modal.hidden {
-  display: none;
-}
+.custom-modal { background: rgba(0,0,0,0.6); }
+.custom-modal.hidden, #confusionMatrixModal.hidden { display: none; }
 
-.modal-content {
+.modal-content, #confusionMatrixModal .modal-content {
   background: #1e1e2f;
   padding: 2rem;
   border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  text-align: center;
   max-width: 400px;
   width: 100%;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
-}
-
-.modal-actions {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
-.modal-content p {
-  color: #eee;
-  font-size: 1.1rem;
 }
 
 #confusionMatrixModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: rgba(0,0,0,0.75);
   z-index: 10000;
-}
-
-#confusionMatrixModal.hidden {
-  display: none;
 }
 
 #confusionMatrixModal .modal-content {
   position: relative;
-  background: #1e1e2f;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
   display: inline-block;
   max-width: 95vw;
   max-height: 90vh;
   overflow: auto;
   width: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 #confusionMatrixModal img {
@@ -658,21 +519,16 @@ body.hero-bg::-webkit-scrollbar {
   animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
 }
 
-/* ========================
-   PAGINACJA + SEARCH BAR
-======================== */
+.modal-content p { color: #eee; font-size: 1.1rem; }
 
+/* PAGINATION + SEARCH BAR */
 .pagination-buttons {
   display: flex;
   justify-content: center;
@@ -684,28 +540,18 @@ body.hero-bg::-webkit-scrollbar {
 
 .pagination-btn {
   background-color: #2a2d3e;
-  color: white;
+  color: #fff;
   border: 1px solid #444;
   padding: 6px 14px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
   font-size: 0.9rem;
 }
 
-.pagination-btn:hover {
-  background-color: #3a3e54;
-}
-
-.pagination-btn.disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.pagination-info {
-  color: #ccc;
-  font-weight: bold;
-}
+.pagination-btn:hover { background-color: #3a3e54; }
+.pagination-btn.disabled { opacity: 0.5; cursor: default; }
+.pagination-info { color: #ccc; font-weight: bold; }
 
 .search-input {
   width: 100%;
@@ -717,7 +563,7 @@ body.hero-bg::-webkit-scrollbar {
   border: 1px solid #444;
   border-radius: 5px;
   margin-bottom: 1.2em;
-  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
   transition: border 0.2s, box-shadow 0.2s;
 }
 
@@ -727,9 +573,7 @@ body.hero-bg::-webkit-scrollbar {
   box-shadow: 0 0 4px #823ce3;
 }
 
-/* ========================
-   PANEL STATYSTYK MODELI (1-kolumnowy)
-======================== */
+/* MODEL STATS PANEL */
 .comparison-form {
   display: flex;
   flex-direction: column;
@@ -744,9 +588,7 @@ body.hero-bg::-webkit-scrollbar {
   display: block;
 }
 
-.compare-button-wrapper {
-  margin-top: 0.5rem;
-}
+.compare-button-wrapper { margin-top: 0.5rem; }
 
 .model-card {
   background-color: #2a2a3a;
@@ -790,9 +632,7 @@ body.hero-bg::-webkit-scrollbar {
   box-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
 
-/* ========================
-   UPLOAD BOX
-======================== */
+/* UPLOAD BOX */
 .upload-box {
   display: flex;
   flex-direction: column;
@@ -800,20 +640,17 @@ body.hero-bg::-webkit-scrollbar {
   border: 2px dashed #9b5df0;
   border-radius: 12px;
   padding: 2.5rem 1rem;
-  background-color: rgba(127, 90, 240, 0.08);
-  transition: background-color 0.3s ease;
+  background-color: rgba(127,90,240,0.08);
+  transition: background-color 0.3s;
   cursor: pointer;
   margin: 0 auto 2rem auto;
   max-width: 500px;
   width: 100%;
 }
 
-.upload-box:hover {
-  background-color: rgba(127, 90, 240, 0.15);
-}
-
+.upload-box:hover { background-color: rgba(127,90,240,0.15); }
 .upload-box.dragover {
-  background-color: rgba(127, 90, 240, 0.2);
+  background-color: rgba(127,90,240,0.2);
   border-color: #b47aff;
 }
 
@@ -824,25 +661,11 @@ body.hero-bg::-webkit-scrollbar {
   font-size: 2rem;
 }
 
-.upload-box p {
-  font-size: 1rem;
-  color: #ccc;
-  margin: 0;
-}
+.upload-box p { font-size: 1rem; color: #ccc; margin: 0; }
+.file-name-preview { font-size: 0.95rem; font-style: italic; color: #aaa; }
+.hidden-input { display: none; }
 
-.file-name-preview {
-  font-size: 0.95rem;
-  font-style: italic;
-  color: #aaa;
-}
-
-.hidden-input {
-  display: none;
-}
-
-/* ========================
-   KLASIFIKACJA
-======================== */
+/* CLASSIFICATION */
 .classification-summary {
   display: flex;
   flex-direction: column;
@@ -861,7 +684,7 @@ body.hero-bg::-webkit-scrollbar {
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
   appearance: none;
-  transition: border 0.2s ease, background 0.2s ease;
+  transition: border 0.2s, background 0.2s;
 }
 
 .preview-item select:focus {
@@ -887,14 +710,9 @@ body.hero-bg::-webkit-scrollbar {
   margin-bottom: 1.5rem;
 }
 
-.edit-header h2 {
-  margin: 0;
-}
+.edit-header h2 { margin: 0; }
 
-/* ========================
-   PODSUMOWANIE KLASYFIKACJI
-======================== */
-
+/* CLASSIFICATION SUMMARY */
 .preview-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -917,42 +735,19 @@ body.hero-bg::-webkit-scrollbar {
   border-radius: 6px;
 }
 
-/* Ramki tylko dla całych kart */
-.preview-item.confidence-low {
-  border: 3px solid #e74c3c;
-}
-.preview-item.confidence-mid {
-  border: 3px solid #f39c12;
-}
-.preview-item.confidence-high {
-  border: 3px solid #2ecc71;
-}
+/* Card borders by confidence */
+.preview-item.confidence-low { border: 3px solid #e74c3c; }
+.preview-item.confidence-mid { border: 3px solid #f39c12; }
+.preview-item.confidence-high { border: 3px solid #2ecc71; }
 
-/* Kolor tekstu tylko dla paska pewności */
-.confidence-color-low {
-  color: #e74c3c;
-}
-.confidence-color-mid {
-  color: #f39c12;
-}
-.confidence-color-high {
-  color: #2ecc71;
-}
+/* Confidence text colors */
+.confidence-color-low { color: #e74c3c; }
+.confidence-color-mid { color: #f39c12; }
+.confidence-color-high { color: #2ecc71; }
 
-
-/* ========================
-   DETALE UŻYTKOWNIKA
-======================== */
-
-.account-info {
-  margin: 3em;
-}
-
-.account-info p {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  color: #ccc;
-}
+/* USER DETAILS */
+.account-info { margin: 3em; }
+.account-info p { margin-bottom: 1rem; font-size: 1rem; color: #ccc; }
 
 .account-actions {
   display: flex;
@@ -961,19 +756,13 @@ body.hero-bg::-webkit-scrollbar {
   margin-top: 3em;
 }
 
-.account-actions .btn,
-.account-actions .btn-outline {
+.account-actions .btn, .account-actions .btn-outline {
   min-width: 160px;
   text-align: center;
 }
 
-
-/* ========================
-   TABELA ADMINA
-======================== */
-.admin-table-wrapper {
-  overflow-x: auto;
-}
+/* ADMIN TABLE */
+.admin-table-wrapper { overflow-x: auto; }
 
 .admin-table {
   width: 100%;
@@ -983,8 +772,7 @@ body.hero-bg::-webkit-scrollbar {
   font-size: 0.95rem;
 }
 
-.admin-table th,
-.admin-table td {
+.admin-table th, .admin-table td {
   text-align: center;
   vertical-align: middle;
   padding: 1rem 1.2rem;
@@ -999,18 +787,10 @@ body.hero-bg::-webkit-scrollbar {
   border-bottom: 2px solid #444860;
 }
 
-.admin-table td {
-  border-bottom: 1px solid #444860;
-}
+.admin-table td { border-bottom: 1px solid #444860; }
+.admin-table tr:hover { background-color: #333752; transition: background 0.2s; }
 
-.admin-table tr:hover {
-  background-color: #333752;
-  transition: background 0.2s ease;
-}
-
-/* ========================
-   STATUSY, IKONY, AKCJE
-======================== */
+/* STATUS, ICONS, ACTIONS */
 .status-active {
   color: #2ecc71;
   font-size: 0.8rem;
@@ -1023,9 +803,7 @@ body.hero-bg::-webkit-scrollbar {
   font-weight: bold;
 }
 
-.inactive-row {
-  opacity: 0.5;
-}
+.inactive-row { opacity: 0.5; }
 
 .icon-button {
   background: none;
@@ -1034,35 +812,19 @@ body.hero-bg::-webkit-scrollbar {
   color: #ccc;
   font-size: 1.2rem;
   padding: 0.3rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s, transform 0.2s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
 }
 
-.icon-button:hover {
-  color: #fff;
-  transform: scale(1.15);
-}
+.icon-button:hover { color: #fff; transform: scale(1.15); }
+.icon-button.danger:hover { color: #e74c3c; }
+.icon-button.success:hover { color: #2ecc71; }
+.icon-button i { pointer-events: none; font-size: 1.2rem; line-height: 1; }
 
-.icon-button.danger:hover {
-  color: #e74c3c;
-}
-
-.icon-button.success:hover {
-  color: #2ecc71;
-}
-
-.icon-button i {
-  pointer-events: none;
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-/* ========================
-   TOASTY (popup, znikające)
-======================== */
+/* TOASTS */
 .toast-container {
   position: fixed;
   top: 100px;
@@ -1101,9 +863,7 @@ body.hero-bg::-webkit-scrollbar {
   cursor: pointer;
 }
 
-/* ========================
-   ALERTY (stałe, nieznikające)
-======================== */
+/* ALERTS */
 .alert {
   margin: 4rem auto 0 auto;
   padding: 1rem;
@@ -1127,9 +887,7 @@ body.hero-bg::-webkit-scrollbar {
   color: #856404;
 }
 
-/* ========================
-   BŁĘDY POD POLAMI FORMULARZY
-======================== */
+/* FORM FIELD ERRORS */
 .form-error {
   color: #dc3545;
   font-size: 0.85rem;
@@ -1138,9 +896,7 @@ body.hero-bg::-webkit-scrollbar {
   padding-left: 0.2rem;
 }
 
-/* ========================
-   ANIMACJE (dla toastów)
-======================== */
+/* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1151,31 +907,26 @@ body.hero-bg::-webkit-scrollbar {
   to   { opacity: 0; transform: translateY(-10px); }
 }
 
-/* ========================
-   RESPONSYWNOŚĆ
-======================== */
+/* RESPONSIVENESS */
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.1rem;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
+  .hero-title { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 1.1rem; }
+  .hero-buttons { flex-direction: column; gap: 0.75rem; }
+  .btn { width: 100%; }
   .auth-container {
     margin-top: 140px;
     margin-bottom: 40px;
     width: 90%;
     padding: 2rem;
+  }
+  .path-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .path-row label,
+  .styled-input.short {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
   }
 }
