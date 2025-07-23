@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Tagify – Plik do pobrania{% endblock %}
+
 {% block content %}
 <div class="user-panel">
   <h2>ZIP gotowy do pobrania</h2>
@@ -14,23 +15,37 @@
     </a>
   </div>
 
-{% if user_paths %}
-  <div style="margin-top: 3rem;">
-    <h3 style="margin-bottom: 1rem;">Podgląd folderów docelowych:</h3>
-    <form method="POST" action="{{ url_for('user.open_path') }}">
-      {{ open_path_form.hidden_tag() }}
+  {% if user_paths %}
+    <div style="margin-top: 3rem;">
+      <h3 style="margin-bottom: 1rem;">Podgląd folderów docelowych:</h3>
+      <form method="POST" action="{{ url_for('user.open_path') }}">
+        {{ open_path_form.hidden_tag() }}
 
-      <div class="folder-preview-wrapper" style="display: flex; gap: 1rem; align-items: center;">
-        {{ open_path_form.class_selector(class="form-select") }}
-        <input type="hidden" name="token" value="{{ download_token }}">
-        <button type="submit" class="open-folder-btn" title="Otwórz folder">
-          <i class="fas fa-folder-open"></i>
-        </button>
-      </div>
-    </form>
-  </div>
-{% endif %}
+        <div class="folder-preview-wrapper" style="display: flex; gap: 1rem; align-items: center;">
+          {{ open_path_form.class_selector(class="form-select") }}
+          <input type="hidden" name="token" value="{{ download_token }}">
+          <button type="submit" class="open-folder-btn" title="Otwórz folder">
+            <i class="fas fa-folder-open"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  {% endif %}
 
-  <a href="{{ url_for('user.classifications') }}" class="btn btn-outline">Powrót do historii klasyfikacji</a>
+  {% if current_user.is_researcher() and confusion_matrix_exists %}
+    <div style="margin-top: 3rem;">
+      <h3>Macierz pomyłek (confusion matrix)</h3>
+      <p style="margin-bottom: 1rem;">
+        Poniższy wykres przedstawia porównanie predykcji modelu z poprawkami wprowadzonymi przez użytkownika.
+      </p>
+      <img src="{{ url_for('static', filename='confusion_matrices/' ~ download_token ~ '/confusion_matrix.png') }}"
+           alt="Confusion Matrix"
+           style="max-width: 100%; border: 1px solid #ccc; background-color: white; margin-bottom: 2em;">
+    </div>
+  {% endif %}
+
+  <a href="{{ url_for('user.classifications') }}" class="btn btn-outline" style="margin-top: 3rem;">
+    Powrót do historii klasyfikacji
+  </a>
 </div>
 {% endblock %}

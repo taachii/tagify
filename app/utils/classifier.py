@@ -2,10 +2,10 @@ import zipfile
 import os
 import shutil
 import uuid
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+import numpy as np # type: ignore
+import tensorflow as tf # type: ignore
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing import image # type: ignore
 from pathlib import Path
 import json
 
@@ -29,9 +29,9 @@ def get_available_models():
 
 def get_preprocess_function(model_name):
     if model_name == "resnet50":
-        from tensorflow.keras.applications.resnet50 import preprocess_input
+        from tensorflow.keras.applications.resnet50 import preprocess_input # type: ignore
     elif model_name in ("efficientnet", "efficientnetb0"):
-        from tensorflow.keras.applications.efficientnet import preprocess_input
+        from tensorflow.keras.applications.efficientnet import preprocess_input # type: ignore
     else:
         raise ValueError(f"Nieznana nazwa modelu: {model_name}")
     return preprocess_input

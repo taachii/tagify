@@ -1,8 +1,8 @@
-from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField, SelectField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
-from flask_wtf.file import FileField, FileAllowed, FileRequired
-from flask_login import current_user
+from flask_wtf import FlaskForm # type: ignore
+from wtforms import SubmitField, StringField, PasswordField, SelectField # type: ignore
+from wtforms.validators import DataRequired, Email, EqualTo, Length # type: ignore
+from flask_wtf.file import FileField, FileAllowed, FileRequired # type: ignore
+from flask_login import current_user # type: ignore
 
 class ZipUploadForm(FlaskForm):
     zip_file = FileField('Plik ZIP ze zdjęciami', validators=[

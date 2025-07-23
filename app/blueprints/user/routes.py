@@ -1,10 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify
-from flask_login import login_required, current_user
+from flask import render_template, redirect, url_for, flash, request, send_file, current_app, jsonify # type: ignore
+from flask_login import login_required, current_user # type: ignore
 from app.models import Classification, UserPath
 import os, json, shutil, math
 import subprocess, platform
 
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename # type: ignore
 from uuid import uuid4
 from app import db
 from datetime import datetime, timedelta
@@ -13,7 +13,7 @@ import zipfile
 
 from . import user
 from .forms import ZipUploadForm, EditProfileForm, ChangePasswordForm, ModelSelectionForm, UserPathsForm, OpenPathForm
-from wtforms import StringField
+from wtforms import StringField # type: ignore
 
 from app.utils.classifier import classify_zip, get_available_models
 from app.utils.expiration import expire_user_classifications_after_login
@@ -220,30 +220,57 @@ def generate_zip(token):
         print(f"Zastosowywanie poprawek do wyników ({len(corrections)} pozycji)...")
         for r in results:
             if r["filename"] in corrections:
-                old = r["predicted_label"]
-                new = corrections[r["filename"]]
-                r["predicted_label"] = new
-                print(f"🖊️ {r['filename']}: {old} → {new}")
+                original = r["predicted_label"]
+                corrected = corrections[r["filename"]]
+                if corrected != original:
+                    r["corrected_label"] = corrected
+                    print(f"🖊️ {r['filename']}: {original} → {corrected}")
+                else:
+                    r.pop("corrected_label", None)  # usuwamy jeśli identyczna
 
         print("Nadpisywanie results.json z poprawkami...")
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
         print("results.json zaktualizowany")
 
+        # 📊 Generowanie confusion matrix
+        from app.utils.metrics import save_confusion_matrix
+
+        try:
+            corrected_results = [
+                (r["corrected_label"], r["predicted_label"])
+                for r in results if "corrected_label" in r
+            ]
+            if corrected_results:
+                # Tymczasowa ścieżka (do katalogu wynikowego)
+                cm_temp_path = os.path.join(job.result_folder, "confusion_matrix.png")
+                save_confusion_matrix(corrected_results, cm_temp_path)
+                print(f"Zapisano confusion matrix: {cm_temp_path}")
+
+                # Docelowa trwała ścieżka (statyczna)
+                cm_static_dir = os.path.join(current_app.root_path, "static", "confusion_matrices", job.download_token)
+                os.makedirs(cm_static_dir, exist_ok=True)
+                cm_final_path = os.path.join(cm_static_dir, "confusion_matrix.png")
+                shutil.copy2(cm_temp_path, cm_final_path)
+                print(f"Confusion matrix skopiowana do: {cm_final_path}")
+            else:
+                print("Brak poprawek – pomijam confusion matrix.")
+        except Exception as e:
+            print(f"Błąd przy generowaniu confusion matrix: {e}")
+
         print("Przygotowywanie struktury katalogów klas...")
         from app.models import UserPath
         with tempfile.TemporaryDirectory() as temp_dir:
             for r in results:
-                klas = r["predicted_label"]
+                klas = r.get("corrected_label", r["predicted_label"])
                 klas_dir = os.path.join(temp_dir, klas)
                 os.makedirs(klas_dir, exist_ok=True)
 
                 original_path = os.path.join(job.result_folder, r["filename"])
                 if os.path.exists(original_path):
-                    # ✅ Kopiowanie do struktury ZIP-a (z oryginalną nazwą)
                     shutil.copy2(original_path, os.path.join(klas_dir, r["filename"]))
 
-                    # ✅ Kopiowanie do folderów lokalnych użytkownika (jeśli skonfigurowane)
+                    # Kopiowanie do folderów lokalnych użytkownika (jeśli ustawione)
                     dest_path = UserPath.query.filter_by(user_id=current_user.uid, class_label=klas).first()
                     if dest_path and os.path.isdir(dest_path.path):
                         try:
@@ -280,7 +307,6 @@ def generate_zip(token):
     print("[KONIEC] ZIP gotowy, redirect na download_ready")
     return redirect(url_for('user.download_ready', token=token))
 
-
 @user.route('/download_ready/<token>')
 @login_required
 def download_ready(token):
@@ -298,6 +324,10 @@ def download_ready(token):
     form = OpenPathForm()
     form.class_selector.choices = [(label, f"{label} – {path}") for label, path in user_paths.items()]
 
+    cm_final_path = os.path.join(current_app.root_path, "static", "confusion_matrices", token, "confusion_matrix.png")
+    confusion_matrix_exists = os.path.exists(cm_final_path)
+    print(f"confusion_matrix_exists: {confusion_matrix_exists}")
+
     return render_template(
         "user/download_ready.html",
         download_token=token,
@@ -305,7 +335,8 @@ def download_ready(token):
         model_name=job.model_name,
         zip_ready=zip_ready,
         user_paths=user_paths,
-        open_path_form=form
+        open_path_form=form,
+        confusion_matrix_exists=confusion_matrix_exists
     )
 
 
@@ -379,6 +410,14 @@ def delete_classification(classification_id):
 
     except Exception as e:
         print(f"Błąd podczas usuwania plików: {e}")
+
+    cm_static_dir = os.path.join(current_app.root_path, "static", "confusion_matrices", job.download_token)
+    if os.path.exists(cm_static_dir):
+        try:
+            shutil.rmtree(cm_static_dir)
+            print(f"Usunięto confusion matrix: {cm_static_dir}")
+        except Exception as e:
+            print(f"Błąd przy usuwaniu confusion matrix: {e}")    
 
     db.session.delete(job)
     db.session.commit()
