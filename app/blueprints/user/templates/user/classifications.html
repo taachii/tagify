@@ -1,5 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Tagify – Historia klasyfikacji{% endblock %}
+
 {% block content %}
 <div class="user-panel wide-panel">
   <h2>Historia klasyfikacji</h2>
@@ -43,11 +44,22 @@
         </td>
         <td>
           {% if not c.is_expired %}
-          <a href="{{ url_for('user.download_zip', token=c.download_token) }}"
-             class="icon-button success download-btn" title="Pobierz ZIP">
-            <i class="fas fa-download"></i>
-          </a>
+            <a href="{{ url_for('user.download_zip', token=c.download_token) }}"
+               class="icon-button success download-btn" title="Pobierz ZIP">
+              <i class="fas fa-download"></i>
+            </a>
           {% endif %}
+
+          {% if current_user.is_researcher() %}
+            {% set cm_path = 'confusion_matrices/' ~ c.download_token ~ '/confusion_matrix.png' %}
+            {% if cm_path | file_exists %}
+              <button class="icon-button" title="Pokaż confusion matrix"
+                    onclick='showConfusionMatrix("{{ url_for("static", filename=cm_path) }}")'>
+                <i class="fas fa-chart-area"></i>
+              </button>
+            {% endif %}
+          {% endif %}
+
           <form id="delete-form-{{ c.id }}" action="{{ url_for('user.delete_classification', classification_id=c.id) }}" method="POST" style="display:inline;">
             <button 
               type="button" 
@@ -66,8 +78,17 @@
     <p>Brak historii klasyfikacji.</p>
   {% endif %}
 </div>
+
+<!-- MODAL Confusion Matrix -->
+<div id="confusionMatrixModal" class="hidden">
+  <div class="modal-content">
+    <span class="close" onclick="hideConfusionMatrix()">&times;</span>
+    <img id="confusionMatrixImg" src="" alt="Confusion Matrix">
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
   <script src="{{ url_for('static', filename='js/expiration_countdown.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/confusion_matrix_modal.js') }}"></script>
 {% endblock %}

@@ -40,4 +40,10 @@ def create_app():
     from app.blueprints.researcher import researcher as researcher_blueprint
     app.register_blueprint(researcher_blueprint, url_prefix='/researcher')
 
+    @app.template_filter('file_exists')
+    def file_exists_filter(path):
+        import os
+        full_path = os.path.join(app.root_path, 'static', path)
+        return os.path.exists(full_path)
+
     return app

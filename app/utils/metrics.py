@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix
-import numpy as np
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns # type: ignore
+from sklearn.metrics import confusion_matrix # type: ignore
+import numpy as np # type: ignore
 import os
 
 def save_confusion_matrix(label_pairs, output_path):
@@ -27,7 +27,7 @@ def save_confusion_matrix(label_pairs, output_path):
     # Normalizacja względem wierszy (każda klasa osobno)
     with np.errstate(all='ignore'):
         cm_norm = cm.astype('float') / cm.sum(axis=1, keepdims=True)
-        cm_norm = np.nan_to_num(cm_norm)  # zamień NaN na 0 (np. gdy klasa nie wystąpiła)
+        cm_norm = np.nan_to_num(cm_norm)
 
     # Tworzenie wykresu
     plt.figure(figsize=(8, 6))

@@ -398,7 +398,7 @@ body.hero-bg::-webkit-scrollbar {
 }
 
 .wide-panel {
-  width: 70% !important;
+  width: 75% !important;
 }
 
 .user-panel {
@@ -603,6 +603,70 @@ body.hero-bg::-webkit-scrollbar {
 .modal-content p {
   color: #eee;
   font-size: 1.1rem;
+}
+
+#confusionMatrixModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+#confusionMatrixModal.hidden {
+  display: none;
+}
+
+#confusionMatrixModal .modal-content {
+  position: relative;
+  background: #1e1e2f;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: inline-block;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: auto;
+  width: auto;
+}
+
+#confusionMatrixModal img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 6px;
+  border: 2px solid #444;
+}
+
+#confusionMatrixModal .close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
+#confusionMatrixModal:not(.hidden) .modal-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ========================
