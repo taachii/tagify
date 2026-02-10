@@ -1,4 +1,4 @@
-# Tagify – Aplikacja do klasyfikacji zdjęć
+# Tagify – Aplikacja do zarządzania i kategoryzacji zdjęć
 
 Tagify to webowa aplikacja oparta na Flasku, umożliwiająca zarządzanie zdjęciami i automatyczną klasyfikację obrazów za pomocą modeli uczenia głębokiego (ResNet50, EfficientNet).
 
