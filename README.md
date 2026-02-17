@@ -56,8 +56,26 @@ flask db init       # tylko przy pierwszym uruchomieniu
 flask db migrate
 flask db upgrade
 ```
+### Krok 4: Pobierz modele klasyfikacyjne
 
-### Krok 4: Uruchom aplikację
+Pobierz katalog `models/` z wytrenowanymi modelami z poniższego linku:
+
+[Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
+
+Po pobraniu umieść katalog `models/` w głównym katalogu projektu, tak aby struktura wyglądała następująco:
+
+```
+tagify/
+├── app/
+├── migrations/
+├── models/
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── run.py
+```
+
+### Krok 5: Uruchom aplikację
 
 ```bash
 python run.py
