@@ -130,6 +130,25 @@ tagify
 
 ---
 
+## Pipeline treningowy modeli
+
+Proces trenowania modeli klasyfikacyjnych został wydzielony do osobnego repozytorium:
+
+https://github.com/taachii/tagify-training
+
+Repozytorium `tagify-training` zawiera:
+
+- kod odpowiedzialny za trening modeli (ResNet50, EfficientNetB0),
+- implementację strategii uczenia transferowego,
+- konfiguracje eksperymentów (ekstrakcja cech, dostrajanie),
+- logi z procesu uczenia,
+- zapis wytrenowanych modeli,
+- źródła danych używanych do trenowania modeli.
+
+W niniejszym repozytorium (`tagify`) znajduje się wyłącznie aplikacja webowa oraz mechanizm inferencji z użyciem wytrenowanych modeli.
+
+---
+
 ## Obsługa modeli i klasyfikacji
 
 - Modele klasyfikacyjne (ResNet50, EfficientNetB0) zapisywane są w katalogu `models/`. Ze względu na duży rozmiar plików wag nie są one przechowywane w repozytorium. Modele można pobrać tutaj: [Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
