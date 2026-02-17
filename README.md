@@ -62,7 +62,7 @@ Pobierz katalog `models/` z wytrenowanymi modelami z poniższego linku:
 
 [Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
 
-Po pobraniu umieść katalog `models/` w głównym katalogu projektu, tak aby struktura wyglądała następująco:
+Po pobraniu oraz wypakowaniu archiwum umieść katalog `models/` w głównym katalogu projektu, tak aby struktura wyglądała następująco:
 
 ```
 tagify/
