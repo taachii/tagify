@@ -10,7 +10,7 @@ Tagify to webowa aplikacja oparta na Flasku, umożliwiająca zarządzanie zdjęc
 - Obsługa ról: `admin`, `regular`, `researcher`
 - Przesyłanie plików ZIP ze zdjęciami do automatycznej klasyfikacji
 - Wybór modelu klasyfikacyjnego (tylko dla roli `researcher`)
-- Korekta wyników klasyfikacji i generowanie ZIP-a z wynikami
+- Korekta wyników klasyfikacji i generowanie archiwum ZIP z wynikami
 - Historia klasyfikacji i możliwość usuwania wyników
 - Panel administratora do zarządzania użytkownikami (aktywacja, dezaktywacja, edycja, usuwanie)
 - Panel badacza do przeglądania statystyk modeli (dokładność, strata, czasy epok)
@@ -102,13 +102,13 @@ tagify
 
 ## Obsługa modeli i klasyfikacji
 
-- Modele klasyfikacyjne (ResNet50, EfficientNetB0) są przechowywane w katalogu models/ (nieobecnym w repozytorium z powodu rozmiarów przekraczających limit GitHuba). Katalog ten można pobrać stąd: [Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
+- Modele klasyfikacyjne (ResNet50, EfficientNetB0) zapisywane są w katalogu `models/`. Ze względu na duży rozmiar plików wag nie są one przechowywane w repozytorium. Modele można pobrać tutaj: [Pobierz modele](https://drive.google.com/file/d/1oCxJwgCrE8KPWXaneOL-c8RcYEZX39EZ/view?usp=sharing)
 - Użytkownicy mogą przesyłać pliki ZIP ze zdjęciami do klasyfikacji
 - Przykładowe foldery ze zdjęciami do testów można pobrać tutaj:
   - [Zbiór testowy - test.zip](https://drive.google.com/file/d/1aOf9k2RgLTpbgGOtubV49oaIX_9j8kJI/view?usp=sharing)
   - [Zbiór testowy - test_3classes.zip](https://drive.google.com/file/d/1IBPYxqoIYH8dRT2jPWJv1nRuQMJ-Mwi7/view?usp=sharing)
 - Wyniki klasyfikacji są prezentowane z wizualnym podkreśleniem pewności predykcji
-- Użytkownik może ręcznie poprawić klasyfikację dla poszczególnych zdjęć, również może wskazać klasę "others" przy zdjęciach niepasujących do żadnej z dostępnych klas
+- Użytkownik może ręcznie poprawić klasyfikację dla poszczególnych zdjęć, również może wskazać klasę "other" przy zdjęciach niepasujących do żadnej z dostępnych klas
 - Po zatwierdzeniu wyników generowany jest plik ZIP z posegregowanymi zdjęciami wg poprawionych klas
 
 ---
@@ -116,7 +116,7 @@ tagify
 ## Panel administratora
 
 - Zarządzanie użytkownikami (edycja, dezaktywacja, aktywacja, usuwanie)
-- Przegladanie listy użytkowników z paginacją, lazy loadingiem oraz filtrowaniem po nazwie
+- Przeglądanie listy użytkowników z paginacją, lazy loadingiem oraz filtrowaniem po nazwie
 
 ---
 
@@ -132,14 +132,14 @@ tagify
 
 - Toasty: krótkie informacje typu success i info - znikają automatycznie
 - Alerty: ważne komunikaty typu danger i warning - widoczne stale
-- Formularze walidują dnae i wyświetlają błędy przy polach
+- Formularze walidują dane i wyświetlają błędy przy polach
 
 ---
 
 ## Plany na przyszłość
 
 - Możliwość integracji z chmurą MEGA dla przechowywania i synchronizacji zdjęć (obecnie odłożone)
-- Internaconalizacja i wsparcie dla wielu języków
+- Internacjonalizacja i wsparcie dla wielu języków
 
 ---
 
