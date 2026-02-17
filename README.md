@@ -29,6 +29,12 @@ cd tagify
 ```
 ### Krok 1: Utwórz i aktywuj wirtualne środowisko
 
+Upewnij się, że masz zainstalowanego Pythona w wersji 3.11 lub nowszej.
+Weryfikacja wersji:
+
+```bash
+python --version
+```
 #### Windows (CMD/Powershell)
 
 ```powershell
