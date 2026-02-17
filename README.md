@@ -21,6 +21,12 @@ Tagify to webowa aplikacja oparta na Flasku, umożliwiająca zarządzanie zdjęc
 
 ## Jak uruchomić projekt lokalnie
 
+### Krok 0: Sklonuj repozytorium
+
+```bash
+git clone https://github.com/taachii/tagify.git
+cd tagify
+```
 ### Krok 1: Utwórz i aktywuj wirtualne środowisko
 
 #### Windows (CMD/Powershell)
